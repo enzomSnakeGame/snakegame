@@ -1,5 +1,5 @@
 const getAllElements = require("../queries/queries");
-
+const getRoomTurn = require("../queries/queries")
 
 getAllElements()
   .then(elementsArray => {
@@ -10,4 +10,25 @@ getAllElements()
   .catch(error => {
     // Handle error
     console.error("Error:", error);
+  });
+
+
+ /* getRoomTurn()
+  .then(game =>{
+    const{idRoom , turn} = game;
+    return {idRoom , turn}
+  })
+  .catch(error => {
+    // Handle error
+    console.error("Error:", error);
+  });*/
+
+  getPlayerPositionByRoomAndTurn()
+  .then(playerPosition => {
+    console.log('Player Position:', playerPosition);
+    return playerPosition;
+    
+  })
+  .catch(error => {
+    console.error('Error:', error);
   });
