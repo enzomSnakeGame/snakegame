@@ -9,6 +9,11 @@ const Board = sequelize.define('Board', {
       autoIncrement:true,
       primaryKey: true
   
+    },
+    Imagepath:
+    {
+        type: Sequelize.STRING(100),
+        allowNull:false,  
     }
   
   });
