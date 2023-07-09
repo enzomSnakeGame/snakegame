@@ -85,19 +85,16 @@ exports.startGame = async (gameId) => {
 };
 
 
-exports.move = async (playerId) => {
+exports.Turn = async (playerId) => {
   try {
     // Get the current game
-    
     const userGame = await Usergame.findOne({ where: { id: playerId } });
-   
     if (!userGame) {
-      
       throw new Error("Player not found");
     }
 
     const roomId = userGame.idroom;
-    
+
     // Get the current game based on the roomId
     const game = await Game.findOne({ where: { idRoom: roomId } });
     console.log(game);
@@ -106,29 +103,16 @@ exports.move = async (playerId) => {
     }
 
     // Check if the player is allowed to make a move based on the turn
-   
     if (game.turn !== userGame.order) {
       throw new Error("It's not your turn to move.");
     }
-    
-    const previousPosition = userGame.playerposition;
-    
-    // Generate a random number from 1 to 6
-    const diceRoll = Math.floor(Math.random() * 6) + 1;
-
-    // Perform the move logic by adding the dice roll to the current position
-    const currentPosition = previousPosition + diceRoll;
-
-    // Update the player's position
-    await userGame.update({ playerposition: currentPosition });
 
     // Update the turn to the next player's order
     const nextTurn = (game.turn % game.order) + 1;
-    console.log(nextTurn);
     await game.update({ turn: nextTurn });
 
-    // Return the dice roll, previous position, and current position
-    return { diceRoll, previousPosition, currentPosition };
+    // Return the updated turn
+    return { turn: nextTurn };
   } catch (error) {
     // Handle errors
     throw error;

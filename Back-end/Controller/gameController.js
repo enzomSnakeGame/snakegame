@@ -55,14 +55,13 @@ exports.createGame = async (req, res) => {
     }
   };
 
-  exports.move = async (req, res) => {
-    try {
-      const playerId = req.body.playerId;
-      const updatedGame = await gameService.move(playerId);
+  exports.updateTurn = async (req, res) => {
+    const { playerId } = req.params;
   
-      res.status(200).json(updatedGame);
+    try {
+      const result = await gameService.Turn(playerId);
+      res.status(200).json(result);
     } catch (error) {
-      console.error("Error performing move:", error);
-      res.status(500).json({ error: "Failed to perform move" });
+      res.status(500).json({ error: error.message });
     }
   };
