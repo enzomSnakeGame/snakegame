@@ -72,6 +72,20 @@ sequelize.sync({force:true}).then(result =>{
     // like User.findAll({where : primarykey})
     console.log(User)
 })
-.catch((err)=>{
-console.log(err);
+.then(User => {
+  const newGame = {
+      idRoom: 1,
+      capacity: 4,
+      Time: "12:00:00",
+      status: 1,
+      turn: 1,
+      idBoard: 1
+  };
+
+  return Game.create(newGame);
+})
+.then(createdGame => {
+  console.log("Game inserted successfully:", createdGame.toJSON());
+}).catch(error => {
+  console.error("Error inserting game:", error);
 });
