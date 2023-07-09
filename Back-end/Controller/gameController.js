@@ -55,13 +55,3 @@ exports.createGame = async (req, res) => {
     }
   };
 
-  exports.updateTurn = async (req, res) => {
-    const { playerId } = req.params;
-  
-    try {
-      const result = await gameService.Turn(playerId);
-      res.status(200).json(result);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  };

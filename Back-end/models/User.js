@@ -19,7 +19,7 @@ const User = sequelize.define('User', {
     },
     tokenPassword:
     {
-        type: Sequelize.STRING(45),
+        type: Sequelize.STRING(100),
         allowNull:false,  
     } 
   
