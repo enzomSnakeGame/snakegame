@@ -10,14 +10,17 @@ const gameRepository = require("../Repository/gameRepository");
       
       if (newPosition === size) {
         console.log('Winner');
+        return -1;
       } else if (newPosition > size) {
         console.log('Try again');
+        return position;
       } else {
         const matchingElement = elementsArray.find(element => element.start === newPosition);
         if (matchingElement) {
           newPosition = matchingElement.end;
         }
         gameRepository.updatePlayerPosition(newPosition);
+        return newPosition;
     }
     } catch (error) {
       console.error('Error:', error);

@@ -85,3 +85,4 @@ getPlayerPositionByRoomAndTurn: async () => {
 module.exports = getAllElements;
 module.exports = getPlayerPositionByRoomAndTurn;
 module.exports = getRoomTurn;
+module.exports = updatePlayerPosition;
