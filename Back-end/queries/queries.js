@@ -87,20 +87,8 @@ const getPlayerPositionByRoomAndTurn=  async () => {
   
 
 
-
-<<<<<<< HEAD
 module.exports = { 
      getAllElements,
      getPlayerPositionByRoomAndTurn ,
      getRoomTurn, 
      updatePlayerPosition}  
-=======
-module.exports = getAllElements;
-module.exports = getPlayerPositionByRoomAndTurn;
-module.exports = getRoomTurn;
-<<<<<<< Updated upstream
-module.exports = updatePlayerPosition;
-=======
-module.exports = updatePlayerPosition;
->>>>>>> f9ed301469ab76815d1928983cf470286a46b1ab
->>>>>>> Stashed changes
