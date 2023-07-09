@@ -1,6 +1,7 @@
 
+const getAllElements = require("../queries/queries");
 
-const move =(dice , ) =>{
+const move =(dice ) =>{
 
 
 
