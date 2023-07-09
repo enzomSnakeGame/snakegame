@@ -7,7 +7,7 @@ const Dashboard=(req , res )=>{
     res.send(200 , "dashboard  page ")
 }
 
-const play=(req , res )=>{
+const start=(req , res )=>{
     const number  = req.body.number ;
 
         // res.send(200 , "registered successfully :)") ; 
@@ -30,5 +30,5 @@ module.exports={
     Dashboard,
     create , 
     join , 
-    play
+    start
 }
