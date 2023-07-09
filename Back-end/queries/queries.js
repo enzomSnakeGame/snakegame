@@ -1,11 +1,17 @@
-const { sequelize, Sequelize } = require('../models/Board');
-const { sequelize, Sequelize } = require('../models/Elements');
-const { sequelize, Sequelize } = require('../models/Game');
-const { sequelize, Sequelize } = require('../models/User');
-const { sequelize, Sequelize } = require('../models/Usergame');
+// const { sequelize, Sequelize } = require('../models/Board');
+// const { sequelize, Sequelize } = require('../models/Elements');
+// const { sequelize, Sequelize } = require('../models/Game');
+// const { sequelize, Sequelize } = require('../models/User');
+// const { sequelize, Sequelize } = require('../models/Usergame');
+
+const Board = require('../models/Board');
+const Elements = require('../models/Elements');
+const Game = require('../models/Game');
+const User= require('../models/User');
+const Usergame = require('../models/Usergame');
 
 
-getAllElements: async()=> {
+const getAllElements = async()=> {
   try {
     const elements = await Elements.findAll();
     const elementsArray = elements.map(element => ({
@@ -21,9 +27,9 @@ getAllElements: async()=> {
   }
 }
 
-getRoomTurn : async()=>{
+const getRoomTurn = async()=>{
     try {
-        const game = await sequelize.models.Game.findOne({
+        const game = await Game.findOne({
           attributes: ['idRoom', 'turn'],
           where: {
             status: 1
@@ -36,11 +42,11 @@ getRoomTurn : async()=>{
       }
   
 }
-getPlayerPositionByRoomAndTurn: async () => {
+const getPlayerPositionByRoomAndTurn=  async () => {
     try {
       const game = await getRoomTurn();
       const { roomId, turn } = game;
-      const userGame = await sequelize.models.Usergame.findOne({
+      const userGame = await Usergame.findOne({
         attributes: ['playerposition'],
         where: {
           idroom: roomId,
@@ -54,11 +60,11 @@ getPlayerPositionByRoomAndTurn: async () => {
     }
   }
 
-  updatePlayerPosition: async (newPosition) => {
+  const updatePlayerPosition = async (newPosition) => {
     try {
       const game = await getRoomTurn(); 
       const { idRoom, turn } = game;
-      const userGame = await sequelize.models.Usergame.findOne({
+      const userGame = await Usergame.findOne({
         where: {
           idroom: idRoom,
           order: turn
@@ -82,7 +88,19 @@ getPlayerPositionByRoomAndTurn: async () => {
 
 
 
+<<<<<<< HEAD
+module.exports = { 
+     getAllElements,
+     getPlayerPositionByRoomAndTurn ,
+     getRoomTurn, 
+     updatePlayerPosition}  
+=======
 module.exports = getAllElements;
 module.exports = getPlayerPositionByRoomAndTurn;
 module.exports = getRoomTurn;
+<<<<<<< Updated upstream
 module.exports = updatePlayerPosition;
+=======
+module.exports = updatePlayerPosition;
+>>>>>>> f9ed301469ab76815d1928983cf470286a46b1ab
+>>>>>>> Stashed changes

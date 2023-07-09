@@ -1,8 +1,8 @@
-const getAllElements = require("../queries/queries");
-const getPlayerPositionByRoomAndTurn = require("../queries/queries")
-const updatePlayerPosition = require("../queries/queries")
+const queries = require("../queries/queries");
+// const getPlayerPositionByRoomAndTurn = require("../queries/queries")
+// const updatePlayerPosition = require("../queries/queries")
 
-getAllElements()
+const getAllElements =  queries.getAllElements()
   .then(elementsArray => {
     // console.log(elementsArray);
     return elementsArray ; 
@@ -24,7 +24,7 @@ getAllElements()
     console.error("Error:", error);
   });*/
 
-  getPlayerPositionByRoomAndTurn()
+  const getPlayerPositionByRoomAndTurn = queries.getPlayerPositionByRoomAndTurn()
   .then(playerPosition => {
     console.log('Player Position:', playerPosition);
     return playerPosition;
@@ -36,7 +36,7 @@ getAllElements()
 
 
   
-updatePlayerPosition(newPosition)
+ const updatePlayerPosition = queries.updatePlayerPosition(newPosition)
     .then(()=> {
         console.log("new position updated successfully "+ newPosition);
     })
