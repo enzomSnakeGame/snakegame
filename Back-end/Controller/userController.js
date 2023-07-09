@@ -4,7 +4,7 @@ const sequelize = require('../util/database.js');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken')
-
+const jwtController = require('../Services/User.js');
 const register = async (req, res) => {
     email = req.body.email
     password = req.body.password
@@ -12,11 +12,19 @@ const register = async (req, res) => {
 
     if (existingUser !== null) {
         res.status(200).send("Email is already taken");
+
     } else {
+        if(jwtController.validateEmailAndPassword(email,password))
+        {
         if(await registeration(email,password))
             res.status(201).json({ message: 'User registered successfully!' });
         else
             res.status(500).json({ error: 'Failed to register user.' });
+        }
+        else
+        {
+            res.status(500).json({ error: 'Failed to register user.' });
+         }  
     }
 }
 async function registeration(email,password){
@@ -57,6 +65,18 @@ const login = async (req, res) => {
         res.status(409).send(result);
     }
 }
+exports.getIdFromToken = (req, res, next) => {
+    try {
+      const token = req.headers.authorization; // Assuming the token is passed in the Authorization header
+  
+      // Validate and retrieve the id from the token using the jwtController
+      const id = jwtController.getIdFromToken(token);
+  
+      res.status(200).json({ id });
+    } catch (error) {
+      res.status(401).json({ error: 'Invalid token' });
+    }
+  };
 
 module.exports = {
     register,

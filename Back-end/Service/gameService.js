@@ -1,7 +1,0 @@
-
-
-const move =(dice , ) =>{
-
-
-
-}
