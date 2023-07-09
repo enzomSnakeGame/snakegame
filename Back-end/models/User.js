@@ -14,8 +14,8 @@ const User = sequelize.define('User', {
     },
   
     email:{ 
-       type: Sequelize.STRING(45),
-       allowNull:false,
+      type: Sequelize.STRING(45),
+      allowNull:false,
     },
     tokenPassword:
     {

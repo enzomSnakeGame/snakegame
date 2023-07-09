@@ -62,10 +62,10 @@ Board.hasMany(Elements, {
   
 
 sequelize.sync({force:true}).then(result =>{
-    return Board.create({})
+    return Board.create({idBoard:"1",Imagepath:"mfesh"})
     console.log(result);
 }).then(Board=>{
-    return User.create({email:"abdada@gmail.com",password:"123456"})
+    return User.create({email:"abdada@gmail.com",tokenPassword:"123456"})
     console.log(Board)
 }).then(User=>{
     // to reterive data use findAll
