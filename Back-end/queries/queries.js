@@ -54,6 +54,32 @@ getPlayerPositionByRoomAndTurn: async () => {
     }
   }
 
+  updatePlayerPosition: async (newPosition) => {
+    try {
+      const game = await getRoomTurn(); 
+      const { idRoom, turn } = game;
+      const userGame = await sequelize.models.Usergame.findOne({
+        where: {
+          idroom: idRoom,
+          order: turn
+        }
+      });
+  
+      if (userGame) {
+        // Update the playerposition
+        userGame.playerposition = newPosition;
+        await userGame.save();
+        return userGame.playerposition;
+      } else {
+        throw new Error('User game not found');
+      }
+    } catch (error) {
+      console.error('Error retrieving and updating player position:', error);
+      throw error;
+    }
+  }
+  
+
 
 
 module.exports = getAllElements;
