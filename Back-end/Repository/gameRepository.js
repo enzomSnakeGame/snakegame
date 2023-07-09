@@ -37,12 +37,12 @@ getAllElements()
 
   
 updatePlayerPosition(newPosition)
-.then(()=> {
-  console.log("new position updated successfully "+ pdatedRows);
-})
-.catch(error => {
-  console.error("Error:", error);
-})
+    .then(()=> {
+        console.log("new position updated successfully "+ newPosition);
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    })
 
 module.exports = {
     getAllElements,

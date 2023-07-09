@@ -1,6 +1,6 @@
 
 var express = require('express');
-
+const gameService = require('../Service/gameService')
 
 
 const Dashboard=(req , res )=>{
@@ -24,19 +24,7 @@ const join=(req , res )=>{
 
 }
 const play=(req , res )=>{
-    //get random number bet 1 & 6
-    randomDice = Math.floor(Math.random() * 6 ) + 1;
-
-    // call function move 
-    /**
-     * get current position of player
-     * get snakes and ladder position
-     * validate the move(logic of the game) 
-     * check winner or not
-     * 
-     * 
-     */
-    res.send(200 , "play page ")
+gameService.move()
 }
 
 

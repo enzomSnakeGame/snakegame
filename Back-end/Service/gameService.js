@@ -25,4 +25,6 @@ const gameRepository = require("../Repository/gameRepository");
   };
   
 
-
+  module.exports = {
+move 
+  }
