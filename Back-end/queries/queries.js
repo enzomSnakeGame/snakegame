@@ -36,7 +36,6 @@ getRoomTurn : async()=>{
       }
   
 }
-
 getPlayerPositionByRoomAndTurn: async () => {
     try {
       const game = await getRoomTurn();
