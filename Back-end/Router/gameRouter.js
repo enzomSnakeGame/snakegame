@@ -7,5 +7,6 @@ router.get('/create',gameController.create)
 router.get('/join',gameController.join)
 router.get('/Dashboard',gameController.Dashboard)
 router.get('/play',gameController.play)
+router.get('/start',gameController.start)
 
 module.exports = router ; 

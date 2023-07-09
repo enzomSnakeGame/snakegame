@@ -23,6 +23,9 @@ const join=(req , res )=>{
         res.send(200 , "join page ")
 
 }
+const play=(req , res )=>{
+    res.send(200 , "play page ")
+}
 
 
 
@@ -30,5 +33,6 @@ module.exports={
     Dashboard,
     create , 
     join , 
-    start
+    start , 
+    play
 }
