@@ -13,7 +13,7 @@ const Elements = sequelize.define('Elements', {
   
    start: {
   
-      type: Sequelize.GEOMETRY('POINT'),
+      type: Sequelize.INTEGER,
   
       allowNull: false
   
@@ -21,7 +21,7 @@ const Elements = sequelize.define('Elements', {
   
     end: {
   
-      type: Sequelize.GEOMETRY('POINT'),
+      type: Sequelize.INTEGER,
   
       allowNull: false
   
