@@ -3,6 +3,7 @@ const gameRepository = require("../Repository/gameRepository");
   const move = async () => {
     // Get random number between 1 and 6
     const randomDice = Math.floor(Math.random() * 6) + 1;
+    const size = 100 ; 
     try {
       const elementsArray = await gameRepository.getAllElements();
       const position = await gameRepository.getPlayerPositionByRoomAndTurn();
