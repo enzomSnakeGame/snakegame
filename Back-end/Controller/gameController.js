@@ -23,6 +23,11 @@ const join=(req , res )=>{
         res.send(200 , "join page ")
 
 }
+const play=(req , res )=>{
+    randomDice = Math.floor(Math.random() * 6) + 1;
+    //play
+    res.send(200 , "play page ")
+}
 
 
 
@@ -30,5 +35,6 @@ module.exports={
     Dashboard,
     create , 
     join , 
-    start
+    start , 
+    play
 }
