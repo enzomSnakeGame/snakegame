@@ -54,3 +54,15 @@ exports.createGame = async (req, res) => {
       res.status(500).json({ error: "Failed to start game" });
     }
   };
+
+  exports.move = async (req, res) => {
+    try {
+      const playerId = req.body.playerId;
+      const updatedGame = await gameService.move(playerId);
+  
+      res.status(200).json(updatedGame);
+    } catch (error) {
+      console.error("Error performing move:", error);
+      res.status(500).json({ error: "Failed to perform move" });
+    }
+  };
