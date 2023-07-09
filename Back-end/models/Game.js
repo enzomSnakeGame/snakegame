@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
+const { SCHEMA } = require("sqlite3");
 const Game = sequelize.define('Game', {
 
     idRoom: {
@@ -39,5 +40,7 @@ const Game = sequelize.define('Game', {
         allowNull:false,
     } 
   
-  });
+  },{
+   SCHEMA: 'snake_ladder' 
+});
   module.exports = Game;

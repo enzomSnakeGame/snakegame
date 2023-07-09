@@ -23,7 +23,7 @@ const Usergame = sequelize.define('Usergame', {
   
     order: Sequelize.INTEGER,
   
-    endDate: Sequelize.DATE
+    endDate: Sequelize.TIME
   
   });
 
