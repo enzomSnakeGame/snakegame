@@ -1,5 +1,6 @@
 const getAllElements = require("../queries/queries");
-const getRoomTurn = require("../queries/queries")
+const getPlayerPositionByRoomAndTurn = require("../queries/queries")
+const updatePlayerPosition = require("../queries/queries")
 
 getAllElements()
   .then(elementsArray => {
@@ -32,3 +33,19 @@ getAllElements()
   .catch(error => {
     console.error('Error:', error);
   });
+
+
+  
+updatePlayerPosition(newPosition)
+.then(()=> {
+  console.log("new position updated successfully "+ pdatedRows);
+})
+.catch(error => {
+  console.error("Error:", error);
+})
+
+module.exports = {
+    getAllElements,
+    getPlayerPositionByRoomAndTurn,
+    updatePlayerPosition
+  };

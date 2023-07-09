@@ -1,14 +1,11 @@
-const elementsService = require("../Repository/gameRepository");
-
-
-
+const gameRepository = require("../Repository/gameRepository");
 
   const move = async () => {
     // Get random number between 1 and 6
     const randomDice = Math.floor(Math.random() * 6) + 1;
     try {
-      const elementsArray = await elementsService.getAllElements();
-      const position = await elementsService.getPlayerPositionByRoomAndTurn();
+      const elementsArray = await gameRepository.getAllElements();
+      const position = await gameRepository.getPlayerPositionByRoomAndTurn();
       let newPosition = position + randomDice;
       
       if (newPosition === size) {
@@ -20,8 +17,8 @@ const elementsService = require("../Repository/gameRepository");
         if (matchingElement) {
           newPosition = matchingElement.end;
         }
-          // call a function to update 
-      }
+        gameRepository.updatePlayerPosition(newPosition);
+    }
     } catch (error) {
       console.error('Error:', error);
     }
