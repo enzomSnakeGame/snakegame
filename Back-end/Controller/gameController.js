@@ -24,6 +24,8 @@ const join=(req , res )=>{
 
 }
 const play=(req , res )=>{
+    randomDice = Math.floor(Math.random() * 6 ) + 1;
+    
     res.send(200 , "play page ")
 }
 
