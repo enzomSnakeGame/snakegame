@@ -24,11 +24,12 @@ const join=(req , res )=>{
 
 }
 const play=(req , res )=>{
-
-const result  = gameService.move() ; 
-if(result == -1){
-    res.send(200 , "winner ")
-}else{
+    const idRoom = reg.body.idRoom ;
+    const turn  = reg.body.turn  ;
+    const result  = gameService.move(idRoom , turn) ; 
+    if(result == -1){
+        res.send(200 , "winner ")
+    }else{
 
 res.send(200 , result )
 }

@@ -66,15 +66,16 @@ const getPlayerPositionByRoomAndTurn=  async (roomId, turn) => {
 
   const updatePlayerPosition = async (newPosition, idRoom , turn ) => {
     try {
-      //const game = await getRoomTurn(); 
-      //const { idRoom, turn } = game;
+   
+     console.log(roomId)
       const userGame = await Usergame.findOne({
+        attributes: ['playerposition'],
         where: {
-          idroom: idRoom,
+          idroom : idRoom,
           order: turn
         }
       });
-  
+         
       if (userGame) {
         // Update the playerposition
         userGame.playerposition = newPosition;
@@ -88,7 +89,29 @@ const getPlayerPositionByRoomAndTurn=  async (roomId, turn) => {
       throw error;
     }
   }
+const updateEndDate = async (idRoom, id) => {
+  try {
+    const userGame = await Usergame.findOne({
+      where: {
+        idroom: idRoom,
+        id: id
+      }
+    });
 
+    if (userGame) {
+      // Update the endDate field with the current date
+      userGame.endDate = new Date();
+      await userGame.save();
+      console.log('EndDate updated successfully.');
+    } else {
+      throw new Error('User game not found.');
+    }
+  } catch (error) {
+    console.error('Error updating endDate:', error);
+    throw error;
+  }
+};
+  
 
   const updatePlayerStatus =  async (roomId, turn) => {
     try {  
@@ -124,5 +147,6 @@ module.exports = {
      getPlayerPositionByRoomAndTurn ,
      getRoomTurn, 
      updatePlayerPosition,
-     updatePlayerStatus
+     updatePlayerStatus  ,
+      updateEndDate
     }  

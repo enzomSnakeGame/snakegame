@@ -25,17 +25,19 @@ const queries = require("../queries/queries");
     // Handle error
     console.error("Error:", error);
   });*/
-  const getRoomTurn = () => {
-    return queries.getRoomTurn()
-      .then(game => {
-        const { idRoom, turn } = game;
-        return { idRoom, turn };
-      })
-      .catch(error => {
-        // Handle error
-        console.error("Error:", error);
-      });
-  };
+
+
+  // const getRoomTurn = () => {
+  //   return queries.getRoomTurn()
+  //     .then(game => {
+  //       const { idRoom, turn } = game;
+  //       return { idRoom, turn };
+  //     })
+  //     .catch(error => {
+  //       // Handle error
+  //       console.error("Error:", error);
+  //     });
+  // };
   
   const getPlayerPositionByRoomAndTurn = (roomId, turn) => {
     return queries.getPlayerPositionByRoomAndTurn(roomId, turn)
@@ -96,9 +98,24 @@ const queries = require("../queries/queries");
         console.error("Error:", error);
       })
     }
+
+
+ const updateEndDate = async (idRoom, id) => {
+  try {
+    await queries.updateEndDate(idRoom, id);
+  } catch (error) {
+    console.error('Error updating endDate:', error);
+    throw error;
+  }
+};
+
+
+
+
 module.exports = {
     getAllElements,
-    getRoomTurn,
+    // getRoomTurn,
+    updateEndDate,
     getPlayerPositionByRoomAndTurn,
     updatePlayerPosition,
     updatePlayerStatus
