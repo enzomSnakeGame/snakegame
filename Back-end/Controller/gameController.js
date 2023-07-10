@@ -24,8 +24,8 @@ const join=(req , res )=>{
 
 }
 const play=(req , res )=>{
-    const idRoom = reg.body.idRoom ;
-    const turn  = reg.body.turn  ;
+    const idRoom = req.body.idRoom ;
+    const turn  = req.body.turn  ;
     const result  = gameService.move(idRoom , turn) ; 
     if(result == -1){
         res.send(200 , "winner ")

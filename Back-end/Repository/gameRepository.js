@@ -90,7 +90,7 @@ const queries = require("../queries/queries");
 
   const updatePlayerStatus =(roomId, turn)=>{
 
-    queries.updatePlayerPosition(roomId, turn)
+    queries.updatePlayerStatus(roomId, turn)
       .then(()=> {
           console.log("status updated successfully "+ roomId);
       })

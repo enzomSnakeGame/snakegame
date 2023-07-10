@@ -46,7 +46,7 @@ const getRoomTurn = async()=>{
 
 const getPlayerPositionByRoomAndTurn=  async (roomId, turn) => {
   try {
-   console.log(roomId)
+   console.log("hena",turn)
     const userGame = await Usergame.findOne({
       attributes: ['playerposition'],
       where: {
@@ -54,7 +54,7 @@ const getPlayerPositionByRoomAndTurn=  async (roomId, turn) => {
         order: turn
       }
     });
-    console.log("gwa player query", Usergame.playerposition )
+    console.log("gwa player query", userGame.playerposition )
        
     return userGame.playerposition;
   } catch (error) {
@@ -65,25 +65,32 @@ const getPlayerPositionByRoomAndTurn=  async (roomId, turn) => {
 
 
   const updatePlayerPosition = async (newPosition, idRoom , turn ) => {
-    try {
-   
-     console.log(roomId)
-      const userGame = await Usergame.findOne({
+    try {  
+     /* const userGame = await Usergame.findOne({
         attributes: ['playerposition'],
         where: {
           idroom : idRoom,
           order: turn
         }
       });
+      
          
       if (userGame) {
         // Update the playerposition
-        userGame.playerposition = newPosition;
+       
+    
+       
+        /*userGame.playerposition = newPosition;
         await userGame.save();
+        console.log("yarab", newPosition)
         return userGame.playerposition;
       } else {
         throw new Error('User game not found');
-      }
+      }*/
+      const [updatedRows] = await Usergame.update(
+        { playerposition: newPosition },
+        { where: { idroom: idRoom, order: turn } }
+      );
     } catch (error) {
       console.error('Error retrieving and updating player position:', error);
       throw error;
