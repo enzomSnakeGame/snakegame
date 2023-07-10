@@ -24,7 +24,14 @@ const join=(req , res )=>{
 
 }
 const play=(req , res )=>{
-gameService.move()
+
+const result  = gameService.move() ; 
+if(result == -1){
+    res.send(200 , "winner ")
+}else{
+
+res.send(200 , result )
+}
 }
 
 
