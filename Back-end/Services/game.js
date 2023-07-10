@@ -1,13 +1,25 @@
 const Game = require("../models/Game");
 const Usergame = require("../models/Usergame");
 // Create a game
-exports.createGame = async (gameData) => {
+exports.createGame = async (gameData, playerId) => {
   try {
     console.log(gameData);
     const game = await Game.create(gameData);
+
+    // Create an entry in the Usergame table
+    const userGameData = {
+      idroom: game.idRoom,
+      id: playerId, // Use the playerId passed as an argument
+      playerposition: 0, // Initial player position is set to zero
+      order: 1, // Use the order attribute from gameData
+      endDate: null, // endDate is set to null initially
+    };
+
+    await Usergame.create(userGameData);
+
     return game;
   } catch (error) {
-    console.log(error)
+    console.log(error);
     throw new Error("Failed to create game");
   }
 };
@@ -16,6 +28,7 @@ exports.createGame = async (gameData) => {
 exports.joinGame = async (gameId, playerId) => {
   try {
     const game = await Game.findByPk(gameId);
+   
     if (!game) {
       throw new Error("Game not found");
     }
@@ -28,16 +41,15 @@ exports.joinGame = async (gameId, playerId) => {
         idroom: gameId,
       },
     });
-   
+    console.log(capacity)
     if (playerCount < capacity) {
       // If the player count is less than the capacity, allow joining the game
-      console.log("aa");
       const usergame = await Usergame.create({
         idroom: gameId,
         id: playerId,
         playerposition: 0, // Set playerposition as 0
         order: playerCount + 1, // Set the order based on the number of existing players
-        endDate: "12:00:00", // Set the endDate to the current time
+        endDate: null, // Set the endDate to the current time
       });
      
       return "Joined the game";
@@ -46,6 +58,7 @@ exports.joinGame = async (gameId, playerId) => {
       return "Cannot join. Game is full";
     }
   } catch (error) {
+    console.log(error)
     throw new Error("Failed to join game");
   }
 };
@@ -67,16 +80,21 @@ exports.startGame = async (gameId) => {
       throw new Error("Game not found");
     }
 
-    // Check if the game status is 1 (indicating it is ready to start)
-    if (game.status !== 1) {
-      throw new Error("Game cannot be started");
+    const playerCount = await Usergame.count({
+      where: {
+        idroom: gameId,
+      },
+    });
+
+    // Check if the player count is equal to the game capacity
+    if (playerCount !== game.capacity) {
+       return "can not Start Game";
     }
 
     // Perform any necessary logic for starting the game
     // You can customize this based on your specific requirements
 
-    // Once done, save the updated game
-    await game.save();
+    // Once done, update the game status to 2 (indicating it is started)
 
     return "Start Game";
   } catch (error) {
@@ -97,18 +115,13 @@ exports.Turn = async (playerId) => {
 
     // Get the current game based on the roomId
     const game = await Game.findOne({ where: { idRoom: roomId } });
-    console.log(game);
+   
     if (!game) {
       throw new Error("Game not found");
-    }
-
-    // Check if the player is allowed to make a move based on the turn
-    if (game.turn !== userGame.order) {
-      throw new Error("It's not your turn to move.");
-    }
-
+    }    
     // Update the turn to the next player's order
-    const nextTurn = (game.turn % game.order) + 1;
+    const nextTurn = (game.turn % userGame.order) + 1;
+    console.log(nextTurn);
     await game.update({ turn: nextTurn });
 
     // Return the updated turn
@@ -118,6 +131,70 @@ exports.Turn = async (playerId) => {
     throw error;
   }
 };
+
+
+exports.checkPlayerStatus = async (playerId) => {
+  try {
+    // Retrieve the Usergame record based on the playerId
+    const userGame = await Usergame.findOne({ where: { id: playerId } });
+
+    if (!userGame) {
+      throw new Error("Player not found");
+    }
+
+    const gameId = userGame.idroom;
+
+    const game = await Game.findByPk(gameId);
+
+    // Check if the game status is already 1
+    if (game.status === 1) {
+      return game;
+    }
+
+    const startTime = Date.now();
+    const endTime = startTime + 10000; // 10 seconds interval
+
+    while (Date.now() < endTime) {
+      // Retrieve the game from the database
+      const updatedGame = await Game.findByPk(gameId);
+
+      // Check if the game status has changed to 1
+      if (updatedGame.status === 1) {
+        return updatedGame;
+      }
+
+      // Wait for 1 second before checking again
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+
+    // If the status did not change within 10 seconds
+    return "Player did not play";
+  } catch (error) {
+    console.error("Error checking game status:", error);
+    throw error;
+  }
+};
+
+
+exports.updateGameStatusTo0= async (gameId)=> {
+  try {
+    const game = await Game.findByPk(gameId);
+
+    // Check if the game is already in status 0
+    if (game.status === 0) {
+      return game;
+    }
+
+    game.status = 0; // Update the status to 0
+    await game.save(); // Save the changes to the database
+
+    return game;
+  } catch (error) {
+    console.error("Error updating game status:", error);
+    throw error;
+  }
+}
+
 
 
 

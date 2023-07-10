@@ -1,17 +1,18 @@
 const gameService = require("../Services/game");
 
 // Create a game
+
 exports.createGame = async (req, res) => {
     try {
-        console.log(req.body);
-      const game = await gameService.createGame(req.body);
+      const gameData = req.body;
+      const playerId = req.body.playerId;
+      const game = await gameService.createGame(gameData, playerId);
       res.status(201).json(game);
     } catch (error) {
       console.error("Error creating game:", error);
       res.status(500).json({ error: "Failed to create game" });
     }
   };
-  
   // Join a game
   exports.joinGame = async (req, res) => {
     try {
@@ -55,3 +56,43 @@ exports.createGame = async (req, res) => {
     }
   };
 
+  exports.updateGameStatusTo0 = async (req, res) => {
+    try {
+      const gameId = req.body.gameId;
+      const game = await gameService.updateGameStatusTo0(gameId);
+      res.status(200).json(game);
+    } catch (error) {
+      console.error("Error updating game status:", error);
+      res.status(500).json({ error: "Failed to update game status" });
+    }
+  };
+
+  // Check game status controller
+exports.checkPlayerStatus = async (req, res) => {
+    try {
+      const gameId = req.body.playerId; // Assuming gameId is provided as a route parameter
+      const result = await gameService.checkPlayerStatus(gameId);
+  
+      if (result === "Player did not play") {
+        res.status(200).json({ message: "Player did not play" });
+      } else {
+        res.status(200).json(result);
+      }
+    } catch (error) {
+      console.error("Error checking game status:", error);
+      res.status(500).json({ error: "Failed to check game status" });
+    }
+  };
+
+
+  // Take a turn
+exports.takeTurn = async (req, res) => {
+    try {
+      const playerId = req.body.playerId;
+      const turnResult = await gameService.Turn(playerId);
+      res.status(200).json(turnResult);
+    } catch (error) {
+      console.error("Error taking turn:", error);
+      res.status(500).json({ error: "Failed to take turn" });
+    }
+  };
