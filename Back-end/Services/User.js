@@ -1,11 +1,11 @@
 require('dotenv').config()
-const user = require("../models/User");
+const User = require("../models/User");
 const jwt = require('jsonwebtoken');
 
 // Middleware function for token verification
-const verifyToken = (req, res, next) => {
+const verifyToken = async (req, res, next) => {
   const token = req.headers['authorization'];
-
+  console.log(token);
   if (!token) {
     return res.status(401).json({ message: 'Access denied. No token provided.' });
   }
@@ -13,14 +13,23 @@ const verifyToken = (req, res, next) => {
   try {
     // Verify and decode the token
     const decoded = jwt.verify(token, process.env.TOKEN_KEY);
-    // Add the decoded user information to the request object
-    // console.log(decoded.email)
-    req.user = decoded;
+    console.log(decoded.email);
+    // Find the user in the database using the email from the decoded token
+    const user = await User.findOne({ where: { email: decoded.email } });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    // Add the user's id to the request object
+    req.playerId = user.id;
+
     next(); // Move to the next middleware or route handler
   } catch (error) {
+    console.log(error)
     res.status(403).json({ message: 'Invalid token.' });
   }
-}
+};
 
 const validateEmailAndPassword = (email, password) => {
     // Email validation

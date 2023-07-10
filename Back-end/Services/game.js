@@ -1,10 +1,16 @@
 const Game = require("../models/Game");
 const Usergame = require("../models/Usergame");
 // Create a game
-exports.createGame = async (gameData, playerId) => {
+exports.createGame = async (Capacity, playerId) => {
   try {
-    console.log(gameData);
-    const game = await Game.create(gameData);
+    console.log(Capacity)
+    const gamedata = {
+      capacity: Capacity,
+      status: 0,
+      turn : 1,
+      idBoard : 1
+    }
+    const game = await Game.create(gamedata);
 
     // Create an entry in the Usergame table
     const userGameData = {
@@ -17,7 +23,7 @@ exports.createGame = async (gameData, playerId) => {
 
     await Usergame.create(userGameData);
 
-    return game;
+    return { gameid: game.idRoom };
   } catch (error) {
     console.log(error);
     throw new Error("Failed to create game");
@@ -66,12 +72,21 @@ exports.joinGame = async (gameId, playerId) => {
 exports.findAllGames = async () => {
   try {
     const games = await Game.findAll();
-    return games;
+    
+    const filteredGames = await Promise.all(games.map(async game => {
+      const { idRoom, capacity } = game;
+      const count = await Usergame.count({ where: { idroom: idRoom } });
+      if (count < capacity) {
+        return game;
+      }
+      return null;
+    }));
+
+    return filteredGames.filter(game => game !== null);
   } catch (error) {
     throw new Error("Failed to retrieve games");
   }
 };
-
 exports.startGame = async (gameId) => {
   try {
     console.log(gameId);
@@ -103,10 +118,10 @@ exports.startGame = async (gameId) => {
 };
 
 
-exports.Turn = async (playerId) => {
+exports.Turn = async (idroom,playerId) => {
   try {
     // Get the current game
-    const userGame = await Usergame.findOne({ where: { id: playerId } });
+    const userGame = await Usergame.findOne({ where: { idroom: idroom, id: playerId } });
     if (!userGame) {
       throw new Error("Player not found");
     }
@@ -115,12 +130,13 @@ exports.Turn = async (playerId) => {
 
     // Get the current game based on the roomId
     const game = await Game.findOne({ where: { idRoom: roomId } });
-   
+
     if (!game) {
       throw new Error("Game not found");
     }    
     // Update the turn to the next player's order
-    const nextTurn = (game.turn % userGame.order) + 2;
+    const nextTurn = ((game.turn % userGame.order) + 2 ) % (game.capacity+1);
+    if(nextTurn>game)
     console.log(nextTurn);
     await game.update({ turn: nextTurn });
 
@@ -133,10 +149,10 @@ exports.Turn = async (playerId) => {
 };
 
 
-exports.checkPlayerStatus = async (playerId) => {
+exports.checkPlayerStatus = async (idroom,playerId) => {
   try {
     // Retrieve the Usergame record based on the playerId
-    const userGame = await Usergame.findOne({ where: { id: playerId } });
+    const userGame = await Usergame.findOne({ where: { idroom: idroom, id: playerId } });
 
     if (!userGame) {
       throw new Error("Player not found");
@@ -170,6 +186,7 @@ exports.checkPlayerStatus = async (playerId) => {
     // If the status did not change within 10 seconds
     return "Player did not play";
   } catch (error) {
+    console.log(err)
     console.error("Error checking game status:", error);
     throw error;
   }
@@ -182,6 +199,7 @@ exports.updateGameStatusTo0= async (gameId)=> {
 
     // Check if the game is already in status 0
     if (game.status === 0) {
+      console.log("already")
       return game;
     }
 
