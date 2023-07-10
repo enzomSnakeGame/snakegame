@@ -2,8 +2,8 @@ const gameRepository = require("../Repository/gameRepository");
 
   const move = async (idRoom , turn) => {
     // Get random number between 1 and 6
-   // const randomDice = Math.floor(Math.random() * 6) + 1;
-const randomDice = 2;
+   const randomDice = Math.floor(Math.random() * 6) + 1;
+// const randomDice = 2;
     console.log("Random",randomDice);
     const size = 100 ; 
     try {

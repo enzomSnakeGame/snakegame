@@ -1,1 +1,11 @@
 http://localhost:3000/game/play
+
+
+
+### 
+POST  http://localhost:3000/game/play  HTTP/1.1
+Content-Type: application/json
+{
+    "idRoom" :1 ,
+    "turn" : 2
+}
