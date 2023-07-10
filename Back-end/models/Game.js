@@ -7,6 +7,7 @@ const Game = sequelize.define('Game', {
   
       type: Sequelize.INTEGER,
       allowNull:false,
+      autoIncrement:true,
       primaryKey: true
   
     },
@@ -17,18 +18,11 @@ const Game = sequelize.define('Game', {
         allowNull:false,
     },
 
-     
-    Time:{
-        type: Sequelize.TIME,
-        allowNull:false,
-    },
-  
     status:{
         type: Sequelize.INTEGER,
         allowNull:false,
     },
      
-  
     turn:
     {
         type: Sequelize.INTEGER,
