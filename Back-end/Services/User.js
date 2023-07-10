@@ -2,30 +2,40 @@ require('dotenv').config()
 const user = require("../models/User");
 const jwt = require('jsonwebtoken');
 
-// Function to retrieve the id from a JWT token
-exports.getIdFromToken = (token) => {
-    
-    try {
-        const decodedToken = jwt.verify(token, process.env.TOKEN_KEY);
-        const email = decodedToken.email; // Assuming the email is stored in the 'email' claim of the JWT payload
-        console.log('Email:', email);
-        return email;
-      } catch (error) {
-        console.error('Failed to verify JWT:', error.message);
-      }
-};
+// Middleware function for token verification
+const verifyToken = (req, res, next) => {
+  const token = req.headers['authorization'];
 
-exports.validateEmailAndPassword = (email, password) => {
+  if (!token) {
+    return res.status(401).json({ message: 'Access denied. No token provided.' });
+  }
+
+  try {
+    // Verify and decode the token
+    const decoded = jwt.verify(token, process.env.TOKEN_KEY);
+    // Add the decoded user information to the request object
+    // console.log(decoded.email)
+    req.user = decoded;
+    next(); // Move to the next middleware or route handler
+  } catch (error) {
+    res.status(403).json({ message: 'Invalid token.' });
+  }
+}
+
+const validateEmailAndPassword = (email, password) => {
     // Email validation
     if (!email || !email.includes("@")) {
-      throw new Error("Invalid email");
+      return false;
     }
-  
     // Password validation
     if (!password || password.length < 8) {
-      throw new Error("Invalid password");
+      return false
     }
-  
     // If both email and password are valid, return true or perform additional logic
     return true;
   };
+
+  module.exports = {
+    verifyToken,
+    validateEmailAndPassword
+};
