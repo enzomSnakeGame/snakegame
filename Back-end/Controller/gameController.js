@@ -99,3 +99,21 @@ exports.takeTurn = async (req, res) => {
       res.status(500).json({ error: "Failed to take turn" });
     }
   };
+
+const play=(req , res )=>{
+  const idRoom = req.body.idRoom ;
+  const turn  = req.body.turn  ;
+  const result  = gameService.move(idRoom , turn) ; 
+  if(result == -1){
+      res.send(200 , "winner ")
+  }else{
+
+  res.send(200 , result )
+  }
+}
+
+
+
+module.exports={
+    play
+}

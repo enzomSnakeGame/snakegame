@@ -3,6 +3,7 @@ var gameController = require('../Controller/gameController');
 var authorization = require('../Services/User');
 const router = express.Router();
 
+router.post('/play',gameController.play)
 router.post('/games/create',authorization.verifyToken ,gameController.createGame);
 router.get('/games',authorization.verifyToken  ,gameController.getAllGames);
 router.post('/games/start',authorization.verifyToken  ,gameController.startGame);
