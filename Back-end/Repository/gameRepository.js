@@ -1,16 +1,6 @@
 const queries = require("../queries/queries");
 
 
-/*const getAllElements =  queries.getAllElements()
-  .then(elementsArray => {
-    // console.log(elementsArray);
-    return elementsArray ; 
-    // Use the elements array as needed
-  })
-  .catch(error => {
-    // Handle error
-    console.error("Error:", error);
-  });*/
 
  const getAllElements = () => {
     return queries.getAllElements()
@@ -85,9 +75,9 @@ const queries = require("../queries/queries");
 
 
    
- const updatePlayerPosition =(newPosition)=>{
+ const updatePlayerPosition =(newPosition, idRoom , turn)=>{
 
-  queries.updatePlayerPosition(newPosition)
+  queries.updatePlayerPosition(newPosition, idRoom, turn)
     .then(()=> {
         console.log("new position updated successfully "+ newPosition);
     })
@@ -95,10 +85,22 @@ const queries = require("../queries/queries");
       console.error("Error:", error);
     })
   }
+
+  const updatePlayerStatus =(roomId, turn)=>{
+
+    queries.updatePlayerPosition(roomId, turn)
+      .then(()=> {
+          console.log("status updated successfully "+ roomId);
+      })
+      .catch(error => {
+        console.error("Error:", error);
+      })
+    }
 module.exports = {
     getAllElements,
     getRoomTurn,
     getPlayerPositionByRoomAndTurn,
-    updatePlayerPosition
+    updatePlayerPosition,
+    updatePlayerStatus
   };
 

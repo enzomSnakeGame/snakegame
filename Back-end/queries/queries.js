@@ -46,8 +46,6 @@ const getRoomTurn = async()=>{
 
 const getPlayerPositionByRoomAndTurn=  async (roomId, turn) => {
   try {
-    //const game = await getRoomTurn();
-    //const { roomId, turn } = game;
    console.log(roomId)
     const userGame = await Usergame.findOne({
       attributes: ['playerposition'],
@@ -65,30 +63,11 @@ const getPlayerPositionByRoomAndTurn=  async (roomId, turn) => {
   }
 }
 
-/*const getPlayerPositionByRoomAndTurn=  async () => {
+
+  const updatePlayerPosition = async (newPosition, idRoom , turn ) => {
     try {
-      const game = await getRoomTurn();
-      const { roomId, turn } = game;
-     console.log(roomId)
-      const userGame = await Usergame.findOne({
-        attributes: ['playerposition'],
-        where: {
-          idroom : roomId,
-          order: turn
-        }
-      });
-         
-      return userGame.playerposition;
-    } catch (error) {
-      console.error('Error retrieving player position :', error);
-      throw error;
-    }
-  }
-*/
-  const updatePlayerPosition = async (newPosition) => {
-    try {
-      const game = await getRoomTurn(); 
-      const { idRoom, turn } = game;
+      //const game = await getRoomTurn(); 
+      //const { idRoom, turn } = game;
       const userGame = await Usergame.findOne({
         where: {
           idroom: idRoom,
@@ -109,6 +88,34 @@ const getPlayerPositionByRoomAndTurn=  async (roomId, turn) => {
       throw error;
     }
   }
+
+
+  const updatePlayerStatus =  async (roomId, turn) => {
+    try {  
+      const userGame = await Game.findOne({
+        where: {
+          idRoom: roomId,
+          turn: turn
+        }
+      });
+  
+      if (userGame) {
+        // Update the status of the player
+        userGame.status = 1;
+        await userGame.save();
+        return userGame.playerposition;
+      } else {
+        throw new Error('User game not found');
+      }
+    } catch (error) {
+      console.error('Error retrieving and updating player status:', error);
+      throw error;
+    }
+  }
+
+  
+
+  
   
 
 
@@ -116,4 +123,6 @@ module.exports = {
      getAllElements,
      getPlayerPositionByRoomAndTurn ,
      getRoomTurn, 
-     updatePlayerPosition}  
+     updatePlayerPosition,
+     updatePlayerStatus
+    }  
