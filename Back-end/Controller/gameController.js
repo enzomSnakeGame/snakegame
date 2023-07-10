@@ -5,7 +5,7 @@ const gameService = require("../Services/game");
 exports.createGame = async (req, res) => {
     try {
       const gameData = req.body;
-      const playerId = req.body.playerId;
+      const playerId = req.playerId;
       const game = await gameService.createGame(gameData, playerId);
       res.status(201).json(game);
     } catch (error) {
@@ -17,7 +17,7 @@ exports.createGame = async (req, res) => {
   exports.joinGame = async (req, res) => {
     try {
       const gameId = req.body.gameId;
-      const playerId = req.body.playerId;
+      const playerId = req.playerId;
       console.log(gameId);
       const result = await gameService.joinGame(gameId, playerId);
   
@@ -70,8 +70,9 @@ exports.createGame = async (req, res) => {
   // Check game status controller
 exports.checkPlayerStatus = async (req, res) => {
     try {
-      const gameId = req.body.playerId; // Assuming gameId is provided as a route parameter
-      const result = await gameService.checkPlayerStatus(gameId);
+        const playerId = req.playerId;
+        const gameId = req.body.gameId; // Assuming gameId is provided as a route parameter
+      const result = await gameService.checkPlayerStatus(gameId,playerId);
   
       if (result === "Player did not play") {
         res.status(200).json({ message: "Player did not play" });
@@ -88,8 +89,9 @@ exports.checkPlayerStatus = async (req, res) => {
   // Take a turn
 exports.takeTurn = async (req, res) => {
     try {
-      const playerId = req.body.playerId;
-      const turnResult = await gameService.Turn(playerId);
+      const playerId = req.playerId;
+      const gameId = req.body.gameId;
+      const turnResult = await gameService.Turn(gameId,playerId);
       res.status(200).json(turnResult);
     } catch (error) {
       console.error("Error taking turn:", error);

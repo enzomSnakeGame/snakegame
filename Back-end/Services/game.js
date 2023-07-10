@@ -103,10 +103,10 @@ exports.startGame = async (gameId) => {
 };
 
 
-exports.Turn = async (playerId) => {
+exports.Turn = async (idroom,playerId) => {
   try {
     // Get the current game
-    const userGame = await Usergame.findOne({ where: { id: playerId } });
+    const userGame = await Usergame.findOne({ where: { idroom: idroom, id: playerId } });
     if (!userGame) {
       throw new Error("Player not found");
     }
@@ -115,7 +115,7 @@ exports.Turn = async (playerId) => {
 
     // Get the current game based on the roomId
     const game = await Game.findOne({ where: { idRoom: roomId } });
-   
+
     if (!game) {
       throw new Error("Game not found");
     }    
@@ -133,10 +133,10 @@ exports.Turn = async (playerId) => {
 };
 
 
-exports.checkPlayerStatus = async (playerId) => {
+exports.checkPlayerStatus = async (idroom,playerId) => {
   try {
     // Retrieve the Usergame record based on the playerId
-    const userGame = await Usergame.findOne({ where: { id: playerId } });
+    const userGame = await Usergame.findOne({ where: { idroom: idroom, id: playerId } });
 
     if (!userGame) {
       throw new Error("Player not found");
