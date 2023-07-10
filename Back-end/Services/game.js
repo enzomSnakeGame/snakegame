@@ -72,12 +72,21 @@ exports.joinGame = async (gameId, playerId) => {
 exports.findAllGames = async () => {
   try {
     const games = await Game.findAll();
-    return games;
+    
+    const filteredGames = await Promise.all(games.map(async game => {
+      const { idRoom, capacity } = game;
+      const count = await Usergame.count({ where: { idroom: idRoom } });
+      if (count < capacity) {
+        return game;
+      }
+      return null;
+    }));
+
+    return filteredGames.filter(game => game !== null);
   } catch (error) {
     throw new Error("Failed to retrieve games");
   }
 };
-
 exports.startGame = async (gameId) => {
   try {
     console.log(gameId);
@@ -177,6 +186,7 @@ exports.checkPlayerStatus = async (idroom,playerId) => {
     // If the status did not change within 10 seconds
     return "Player did not play";
   } catch (error) {
+    console.log(err)
     console.error("Error checking game status:", error);
     throw error;
   }
@@ -189,7 +199,7 @@ exports.updateGameStatusTo0= async (gameId)=> {
 
     // Check if the game is already in status 0
     if (game.status === 0) {
-      console.log("already 0")
+      console.log("already")
       return game;
     }
 
