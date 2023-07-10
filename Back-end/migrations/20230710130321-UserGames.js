@@ -16,7 +16,7 @@ module.exports = {
       playerposition: {
         type: Sequelize.INTEGER
       },
-      "order": {
+      order: {
         type: Sequelize.INTEGER
       },
       endDate: {

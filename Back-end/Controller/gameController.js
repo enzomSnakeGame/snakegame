@@ -102,15 +102,15 @@ exports.takeTurn = async (req, res) => {
     }
   };
 
-exports.play = (req , res ) =>{
+exports.play =async (req , res ) =>{
   const idRoom = req.body.idRoom ;
   const turn  = req.body.turn  ;
-  const result  = playService.move(idRoom , turn) ; 
+  const result  =  await playService.move(idRoom , turn) ; 
   if(result == -1){
-      res.send(200 , "winner ")
+      res.status(200).send("winner");
   }else{
 
-  res.send(200 , result )
+    res.status(200).json({"msg":result});
   }
 }
 

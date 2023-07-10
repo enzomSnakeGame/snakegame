@@ -6,15 +6,12 @@ module.exports = {
       idRoom: {
         allowNull: false,
         primaryKey: true,
+        autoIncrement: true,
         type: Sequelize.INTEGER
       },
       capacity: {
         allowNull: false,
         type: Sequelize.INTEGER
-      },
-      Time: {
-        allowNull: false,
-        type: Sequelize.TIME
       },
       status: {
         allowNull: false,

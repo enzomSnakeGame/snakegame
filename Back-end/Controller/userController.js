@@ -25,16 +25,20 @@ const register = async (req, res) => {
 }
 
 async function registeration(email,password){
+    console.log(email)
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     try {
+       
         const newUser = await User.create({
         email: email,
         tokenPassword: hashedPassword,
         });
+
         return true;
     } catch (error) {
+        console.log(error)
         return false;
     }
 }
