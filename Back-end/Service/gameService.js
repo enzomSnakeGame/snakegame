@@ -1,9 +1,9 @@
 const gameRepository = require("../Repository/gameRepository");
 
-  const move = async (idRoom , turn) => {
+exports.move = async (idRoom , turn) => {
     // Get random number between 1 and 6
-   const randomDice = Math.floor(Math.random() * 6) + 1;
-// const randomDice = 2;
+//   const randomDice = Math.floor(Math.random() * 6) + 1;
+ const randomDice = 5;
     console.log("Random",randomDice);
     const size = 100 ; 
     try {
@@ -15,7 +15,7 @@ const gameRepository = require("../Repository/gameRepository");
       console.log("el mkan ",position)
 
       let newPosition = position + randomDice;
-  console.log("moveeeee" ,newPosition)
+      console.log("moveeeee" ,newPosition)
       if (newPosition === size) {
         console.log('Winner');
         gameRepository.updatePlayerPosition(newPosition,idRoom,turn);
@@ -44,7 +44,3 @@ const gameRepository = require("../Repository/gameRepository");
     }
 
   };
-
-  module.exports = {
-    move 
-  }

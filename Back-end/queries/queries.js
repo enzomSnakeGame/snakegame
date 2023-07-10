@@ -156,4 +156,4 @@ module.exports = {
      updatePlayerPosition,
      updatePlayerStatus  ,
       updateEndDate
-    }  
+}  
