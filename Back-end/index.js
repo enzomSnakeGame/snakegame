@@ -59,19 +59,12 @@ Board.hasMany(Elements, {
   
   });
   
-  
-
 sequelize.sync({force:true}).then(result =>{
     return Board.create({idBoard:"1",Imagepath:"mfesh"})
-    console.log(result);
 }).then(Board=>{
     return User.create({email:"abdada@gmail.com",tokenPassword:"123456"})
-    console.log(Board)
-}).then(User=>{
-    // to reterive data use findAll
-    // like User.findAll({where : primarykey})
-    console.log(User)
-})
-.catch((err)=>{
-console.log(err);
+}).then(Board=>{
+  return User.create({email:"abdad12a@gmail.com",tokenPassword:"12443456"})
+}).catch(error => {
+  console.error("Error inserting game:", error);
 });
