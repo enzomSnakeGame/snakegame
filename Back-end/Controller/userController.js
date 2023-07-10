@@ -28,9 +28,7 @@ const register = async (req, res) => {
     }
 }
 async function registeration(email,password){
-    console.log(password)
     const salt = await bcrypt.genSalt(20);
-    console.log(salt)
     const hashedPassword = await bcrypt.hash(password, salt);
     console.log(hashedPassword)
 
@@ -65,10 +63,10 @@ const login = async (req, res) => {
         res.status(409).send(result);
     }
 }
-exports.getIdFromToken = (req, res, next) => {
+const getIdFromToken = (req, res, next) => {
     try {
       const token = req.headers.authorization; // Assuming the token is passed in the Authorization header
-  
+   
       // Validate and retrieve the id from the token using the jwtController
       const id = jwtController.getIdFromToken(token);
   
@@ -80,5 +78,6 @@ exports.getIdFromToken = (req, res, next) => {
 
 module.exports = {
     register,
-    login
+    login,
+    getIdFromToken
 };

@@ -5,5 +5,5 @@ const router = express.Router();
 
 router.post('/register',userController.register)
 router.post('/login',userController.login)
-router.get('/get-id', jwtController.getIdFromToken);
+router.get('/getid', userController.getIdFromToken);
 module.exports = router ; 
