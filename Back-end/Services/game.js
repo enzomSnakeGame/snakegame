@@ -1,10 +1,16 @@
 const Game = require("../models/Game");
 const Usergame = require("../models/Usergame");
 // Create a game
-exports.createGame = async (gameData, playerId) => {
+exports.createGame = async (Capacity, playerId) => {
   try {
-    console.log(gameData);
-    const game = await Game.create(gameData);
+    console.log(Capacity)
+    const gamedata = {
+      capacity: Capacity,
+      status: 0,
+      turn : 1,
+      idBoard : 1
+    }
+    const game = await Game.create(gamedata);
 
     // Create an entry in the Usergame table
     const userGameData = {
@@ -17,7 +23,7 @@ exports.createGame = async (gameData, playerId) => {
 
     await Usergame.create(userGameData);
 
-    return game;
+    return { gameid: game.idRoom };
   } catch (error) {
     console.log(error);
     throw new Error("Failed to create game");
@@ -120,7 +126,8 @@ exports.Turn = async (idroom,playerId) => {
       throw new Error("Game not found");
     }    
     // Update the turn to the next player's order
-    const nextTurn = (game.turn % userGame.order) + 2;
+    const nextTurn = ((game.turn % userGame.order) + 2 ) % (game.capacity+1);
+    if(nextTurn>game)
     console.log(nextTurn);
     await game.update({ turn: nextTurn });
 
@@ -182,6 +189,7 @@ exports.updateGameStatusTo0= async (gameId)=> {
 
     // Check if the game is already in status 0
     if (game.status === 0) {
+      console.log("already 0")
       return game;
     }
 

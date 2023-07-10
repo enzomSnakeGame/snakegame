@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 // Middleware function for token verification
 const verifyToken = async (req, res, next) => {
   const token = req.headers['authorization'];
-
+  console.log(token);
   if (!token) {
     return res.status(401).json({ message: 'Access denied. No token provided.' });
   }
@@ -13,7 +13,7 @@ const verifyToken = async (req, res, next) => {
   try {
     // Verify and decode the token
     const decoded = jwt.verify(token, process.env.TOKEN_KEY);
-
+    console.log(decoded.email);
     // Find the user in the database using the email from the decoded token
     const user = await User.findOne({ where: { email: decoded.email } });
 
@@ -26,6 +26,7 @@ const verifyToken = async (req, res, next) => {
 
     next(); // Move to the next middleware or route handler
   } catch (error) {
+    console.log(error)
     res.status(403).json({ message: 'Invalid token.' });
   }
 };

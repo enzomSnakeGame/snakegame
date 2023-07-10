@@ -4,8 +4,9 @@ const gameService = require("../Services/game");
 
 exports.createGame = async (req, res) => {
     try {
-      const gameData = req.body;
+      const gameData = req.body.capacity;
       const playerId = req.playerId;
+       console.log(gameData)
       const game = await gameService.createGame(gameData, playerId);
       res.status(201).json(game);
     } catch (error) {
