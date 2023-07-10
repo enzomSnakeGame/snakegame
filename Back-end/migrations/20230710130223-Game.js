@@ -6,6 +6,7 @@ module.exports = {
       idRoom: {
         allowNull: false,
         primaryKey: true,
+        autoIncrement: true,
         type: Sequelize.INTEGER
       },
       capacity: {
