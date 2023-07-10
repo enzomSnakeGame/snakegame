@@ -120,7 +120,7 @@ exports.Turn = async (playerId) => {
       throw new Error("Game not found");
     }    
     // Update the turn to the next player's order
-    const nextTurn = (game.turn % userGame.order) + 1;
+    const nextTurn = (game.turn % userGame.order) + 2;
     console.log(nextTurn);
     await game.update({ turn: nextTurn });
 
