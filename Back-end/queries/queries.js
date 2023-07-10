@@ -96,12 +96,12 @@ const getPlayerPositionByRoomAndTurn=  async (roomId, turn) => {
       throw error;
     }
   }
-const updateEndDate = async (idRoom, id) => {
+const updateEndDate = async (idRoom, turn) => {
   try {
     const userGame = await Usergame.findOne({
       where: {
         idroom: idRoom,
-        id: id
+        order: turn
       }
     });
 

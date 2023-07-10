@@ -18,7 +18,8 @@ const randomDice = 2;
   console.log("moveeeee" ,newPosition)
       if (newPosition === size) {
         console.log('Winner');
-        gameRepository.updateEndDate();
+        gameRepository.updatePlayerPosition(newPosition,idRoom,turn);
+        gameRepository.updateEndDate(idRoom,turn);
         gameRepository.updatePlayerStatus(idRoom, turn);
         return -1;
       } else if (newPosition > size) {
