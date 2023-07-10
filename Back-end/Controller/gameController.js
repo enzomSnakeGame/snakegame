@@ -1,5 +1,5 @@
 const gameService = require("../Services/game");
-
+const moveService = require('../Service/gameService')
 // Create a game
 
 exports.createGame = async (req, res) => {
@@ -100,20 +100,12 @@ exports.takeTurn = async (req, res) => {
     }
   };
 
-const play=(req , res )=>{
+  exports.play= async(req , res )=>{
   const idRoom = req.body.idRoom ;
   const turn  = req.body.turn  ;
-  const result  = gameService.move(idRoom , turn) ; 
-  if(result == -1){
-      res.send(200 , "winner ")
-  }else{
-
-  res.send(200 , result )
-  }
+  const gameMoveResult   =  await moveService.move(idRoom , turn) ; 
+    res.status(200).json(gameMoveResult );
+  
 }
 
 
-
-module.exports={
-    play
-}

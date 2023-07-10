@@ -6,7 +6,6 @@ module.exports = {
       {
         idRoom: 1,
         capacity: 4,
-        Time: '12:00 PM',
         status: 1,
         turn: 1,
         idBoard: 1,
@@ -16,7 +15,6 @@ module.exports = {
       {
         idRoom: 2,
         capacity: 2,
-        Time: '',
         status: 1,
         turn: 1,
         idBoard: 2,

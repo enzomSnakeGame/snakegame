@@ -12,10 +12,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      Time: {
-        allowNull: false,
-        type: Sequelize.TIME
-      },
       status: {
         allowNull: false,
         type: Sequelize.INTEGER
