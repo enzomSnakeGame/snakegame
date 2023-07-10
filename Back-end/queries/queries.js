@@ -42,23 +42,29 @@ const getRoomTurn = async()=>{
       }
   
 }
-const getPlayerPositionByRoomAndTurn=  async () => {
-    try {
-      const game = await getRoomTurn();
-      const { roomId, turn } = game;
-      const userGame = await Usergame.findOne({
-        attributes: ['playerposition'],
-        where: {
-          idroom: roomId,
-          order: turn
-        }
-      });
-      return userGame.playerposition;
-    } catch (error) {
-      console.error('Error retrieving player position:', error);
-      throw error;
+const getPlayerPositionByRoomAndTurn = async () => {
+  try {
+    const game = await getRoomTurn();
+    if (!game) {
+      throw new Error('No active game found');
     }
+    const { idRoom, turn } = game;
+    const userGame = await Usergame.findOne({
+      attributes: ['playerposition'],
+      where: {
+        idroom: idRoom,
+        order: turn
+      }
+    });
+    if (!userGame) {
+      throw new Error('User game not found');
+    }
+    return userGame.playerposition;
+  } catch (error) {
+    console.error('Error retrieving player position:', error);
+    throw error;
   }
+}
 
   const updatePlayerPosition = async (newPosition) => {
     try {

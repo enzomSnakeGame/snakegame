@@ -2,17 +2,18 @@ const queries = require("../queries/queries");
 // const getPlayerPositionByRoomAndTurn = require("../queries/queries")
 // const updatePlayerPosition = require("../queries/queries")
 
-const getAllElements =  queries.getAllElements()
-  .then(elementsArray => {
-    // console.log(elementsArray);
-    return elementsArray ; 
-    // Use the elements array as needed
-  })
-  .catch(error => {
-    // Handle error
-    console.error("Error:", error);
-  });
-
+const getAllElements = () => {
+  return queries.getAllElements()
+    .then(elementsArray => {
+      // console.log(elementsArray);
+      return elementsArray ; 
+      // Use the elements array as needed
+    })
+    .catch(error => {
+      // Handle error
+      console.error("Error:", error);
+    });
+};
 
  /* getRoomTurn()
   .then(game =>{
@@ -36,14 +37,16 @@ const getAllElements =  queries.getAllElements()
 
 
   
- const updatePlayerPosition = queries.updatePlayerPosition(newPosition)
+ const updatePlayerPosition =(newPosition)=>{
+    
+    queries.updatePlayerPosition(newPosition)
     .then(()=> {
         console.log("new position updated successfully "+ newPosition);
     })
     .catch(error => {
       console.error("Error:", error);
     })
-
+ }
 module.exports = {
     getAllElements,
     getPlayerPositionByRoomAndTurn,
