@@ -35,6 +35,7 @@ const getRoomTurn = async()=>{
             status: 1
           }
         });
+        console.log("gwa query",game.idRoom)
         return game;
       } catch (error) {
         console.error('Error retrieving roomid and turn:', error);
@@ -42,24 +43,48 @@ const getRoomTurn = async()=>{
       }
   
 }
-const getPlayerPositionByRoomAndTurn=  async () => {
+
+const getPlayerPositionByRoomAndTurn=  async (roomId, turn) => {
+  try {
+    //const game = await getRoomTurn();
+    //const { roomId, turn } = game;
+   console.log(roomId)
+    const userGame = await Usergame.findOne({
+      attributes: ['playerposition'],
+      where: {
+        idroom : roomId,
+        order: turn
+      }
+    });
+    console.log("gwa player query", Usergame.playerposition )
+       
+    return userGame.playerposition;
+  } catch (error) {
+    console.error('Error retrieving player position :', error);
+    throw error;
+  }
+}
+
+/*const getPlayerPositionByRoomAndTurn=  async () => {
     try {
       const game = await getRoomTurn();
       const { roomId, turn } = game;
+     console.log(roomId)
       const userGame = await Usergame.findOne({
         attributes: ['playerposition'],
         where: {
-          idroom: roomId,
+          idroom : roomId,
           order: turn
         }
       });
+         
       return userGame.playerposition;
     } catch (error) {
-      console.error('Error retrieving player position:', error);
+      console.error('Error retrieving player position :', error);
       throw error;
     }
   }
-
+*/
   const updatePlayerPosition = async (newPosition) => {
     try {
       const game = await getRoomTurn(); 
