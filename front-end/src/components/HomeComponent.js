@@ -14,14 +14,34 @@ function App() {
   };
 
   const handleInputChange = (event) => {
-    setCapacity(event.target.value);
-  };
+    const value = parseInt(event.target.value, 10);
+    if (!isNaN(value)) {
+      setCapacity(value);
+    }
+
+   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // Perform any necessary action with the capacity value here
     console.log('Submitted capacity:', capacity);
   };
+
+  // use this way to fetch the Api 
+
+  // useEffect(() => {
+  //   // Fetch data from the API
+  //   fetch('your_api_endpoint')
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       // Set the fetched data to the state
+  //       setCards(data);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching data:', error);
+  //     });
+  // }, []);
+
 
 
   useEffect(() => {
@@ -67,9 +87,10 @@ function App() {
                 Capacity:
                 <input
                   type="number"
-                  value={capacity}
-                  onChange={handleInputChange}
+                   value={capacity || ''}                 
+                    onChange={handleInputChange}
                   class="capacity-input"
+                  inputMode="numeric"
                 />
               </label>
               </div>
