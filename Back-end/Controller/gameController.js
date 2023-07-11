@@ -109,3 +109,23 @@ exports.takeTurn = async (req, res) => {
 }
 
 
+exports.checkOrderController = async (req, res) => {
+  
+  const playerId = req.playerId;
+  const gameId = req.body.gameId;
+
+  try {
+    const result = await gameService.checkOrder(playerId, gameId);
+
+    if (result === 'Matches') {
+      return res.status(200).json({ message: 'Order matches the turn' });
+    } else {
+      return res.status(200).json({ message: 'Order does not match the turn' });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+

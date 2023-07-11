@@ -11,5 +11,6 @@ router.post('/games/join',authorization.verifyToken  ,gameController.joinGame);
 router.post('/games/turn',authorization.verifyToken  ,gameController.takeTurn);
 router.get('/games/status', authorization.verifyToken ,gameController.checkPlayerStatus); // Add this line for checking game status
 router.post('/games/status/update',authorization.verifyToken ,gameController.updateGameStatusTo0); // Add this line for updating game status to 0
+router.post('/games/checkOrder',authorization.verifyToken ,gameController.checkOrderController);
 
 module.exports = router;
