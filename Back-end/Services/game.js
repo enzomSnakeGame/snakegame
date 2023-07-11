@@ -106,12 +106,7 @@ exports.startGame = async (gameId) => {
        return "can not Start Game";
     }
 
-    // Perform any necessary logic for starting the game
-    // You can customize this based on your specific requirements
-
-    // Once done, update the game status to 2 (indicating it is started)
-
-    return "Start Game";
+    return {capacity: game.capacity, turn: game.turn };
   } catch (error) {
     throw new Error("Failed to start game");
   }
@@ -206,10 +201,36 @@ exports.updateGameStatusTo0= async (gameId)=> {
     game.status = 0; // Update the status to 0
     await game.save(); // Save the changes to the database
 
-    return game;
+    return "updated";
   } catch (error) {
     console.error("Error updating game status:", error);
     throw error;
+  }
+}
+
+exports.checkOrder = async(playerId,gameId)=>{
+  try {
+    const usergame = await Usergame.findOne({ where: { id: playerId, idroom: gameId } });
+
+    if (!usergame) {
+      throw new Error('Usergame not found');
+    }
+
+    const game = await Game.findOne({ where: { idRoom: gameId } });
+
+    if (!game) {
+      throw new Error('Game not found');
+    }
+
+    if (usergame.order === game.turn) {
+      console.log('Order matches the turn');
+      return "Matches"
+    } else {
+      console.log('Order does not match the turn');
+    }
+    return "Not Matches"
+  } catch (error) {
+    console.error(error);
   }
 }
 
