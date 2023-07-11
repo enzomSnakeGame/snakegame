@@ -24,6 +24,7 @@ const generatePlayerTokens = (numTokens) => {
   }
   return playerTokens;
 };
+
 function App() {
   const [diceNumber, setDiceNumber] = useState(null);
   let numTokens = 10;
@@ -40,12 +41,49 @@ function App() {
     }
   }, [countdown]);
 
+  
+  const rollDice = async () => {
+    try {
+     
 
-  const rollDice = () => {
-    const randomNumber = Math.floor(Math.random() * 6) + 1;
-    setDiceNumber(randomNumber);
-    movePlayerToken(currentPlayer, randomNumber);
-    setCurrentPlayer(currentPlayer === numTokens ? 1 : currentPlayer + 1);
+        const fetch = require('node-fetch');
+
+        const idRoom = 1;
+        const turn = 1;
+        
+        const url = 'http://localhost:3001/game/play';
+        
+        const data = {
+          idRoom: idRoom,
+          turn: turn
+        };
+        
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+          .then(response => response.json())
+          .then(data => {
+            // Handle response data
+          })
+          .catch(error => {
+            // Handle error
+          });
+      // Handle the API response data
+      const randomNumber = Math.floor(Math.random() * 6) + 1;
+      setDiceNumber(randomNumber);
+      
+      // Move player token based on the API response
+      movePlayerToken(currentPlayer, randomNumber);
+      setCurrentPlayer(currentPlayer === numTokens ? 1 : currentPlayer + 1);
+      
+    } catch (error) {
+      console.error(error);
+      // Handle any errors that occur during the API call
+    }
   };
   const movePlayerToken = (id, index) => {
     id =1;
