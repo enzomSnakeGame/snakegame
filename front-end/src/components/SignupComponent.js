@@ -21,7 +21,19 @@ export default function SignupComponent(){
 
   //handle Signup API Integration here
   const createAccount=()=>{
-    console.log("logIn");
+    const endpoint='http://localhost:3001/user/register';
+      fetch(endpoint,
+        {
+        method:'POST',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body:JSON.stringify(signupState)
+        }).then(response=>response.json())
+        .then(data=>{
+          //API Success from LoginRadius Login API
+        })
+        .catch(error=>console.log(error))
   }
 
     return(
