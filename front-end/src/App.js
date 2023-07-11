@@ -3,7 +3,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import SignupPage from './pages/Signup';
 import LoginPage from './pages/Login';
 import BoardPage from './pages/Board';
-
+import HomePage from './pages/home'
 function App() {
   return (
     <div className="min-h-full h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -13,6 +13,8 @@ function App() {
             <Route path="/" element={<LoginPage/>} />
             <Route path="/signup" element={<SignupPage/>} />
             <Route path="/board" element={<BoardPage/>} />
+            <Route path="/home" element={<HomePage/>} />
+
         </Routes>
       </BrowserRouter>
     </div>
