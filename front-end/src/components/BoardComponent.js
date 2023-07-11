@@ -5,6 +5,7 @@ const colors = ['teal', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', '
 
 const generatePlayerTokens = (numTokens) => {
   const increaseLeftBy = 50;
+  
   let playerTokens = [];
   if (numTokens > 0) {
     let remainingColors = [...colors]; // Copy the colors array
@@ -13,8 +14,11 @@ const generatePlayerTokens = (numTokens) => {
       const color = remainingColors[randomIndex];
       remainingColors.splice(randomIndex, 1); // Remove the selected color from the remaining colors
       playerTokens.push({
+        top:500,
         color,
+        id: i + 1,
         left: -50 - i * increaseLeftBy,
+       
       });
     }
   }
@@ -23,9 +27,9 @@ const generatePlayerTokens = (numTokens) => {
 function App() {
   const [diceNumber, setDiceNumber] = useState(null);
   let numTokens = 10;
-  const [playerTokens] = useState(generatePlayerTokens(numTokens));
   const [countdown, setCountdown] = useState(10);
-
+  const [currentPlayer, setCurrentPlayer] = useState(1);
+  const [playerTokens, setPlayerTokens] = useState(generatePlayerTokens(numTokens));
   useEffect(() => {
     if (countdown > 0) {
       const timer = setTimeout(() => {
@@ -40,11 +44,49 @@ function App() {
   const rollDice = () => {
     const randomNumber = Math.floor(Math.random() * 6) + 1;
     setDiceNumber(randomNumber);
+    movePlayerToken(currentPlayer, randomNumber);
+    setCurrentPlayer(currentPlayer === numTokens ? 1 : currentPlayer + 1);
   };
-  
+  const movePlayerToken = (id, index) => {
+    id =1;
+    index = 1;
+    const currentPlayerTokenIndex = playerTokens.findIndex(token => token.id === id);
+    if (currentPlayerTokenIndex !== -1) {
+      const updatedPlayerTokens = [...playerTokens];
+      let left2 = Math.floor((index-1)/10);
+      let top2 = 0;
+      if(left2%2 !==0)
+      {
+        top2 = (index-1)%10;
+        top2 = 11-top2-2;
+      }
+      else
+      {
+         top2 = (index-1)%10;
+      }
+      
+      left2 = left2+1;
+      top2 = top2 +1;
+      const newPosition = updatedPlayerTokens[currentPlayerTokenIndex].left + (top2 * 50) ;
+      const newpost = updatedPlayerTokens[currentPlayerTokenIndex].top - left2*50;
+      updatedPlayerTokens[currentPlayerTokenIndex].left = newPosition;
+      updatedPlayerTokens[currentPlayerTokenIndex].top = newpost;
+
+      setPlayerTokens(updatedPlayerTokens);
+
+      const updated2PlayerTokens = playerTokens.map(token => {
+        if (token.top === 500) {
+          token.left += 50; // Update the left position by 50 units
+        }
+        return token;
+      });
+    
+      setPlayerTokens(updated2PlayerTokens);
+      
+    }
+  };
  
   return (
-    <view>
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
         <h2 style={{ marginLeft: '240px', marginBottom: '10px' }}>Snakes and Ladders</h2>
@@ -63,10 +105,10 @@ function App() {
            
              {playerTokens.map((token, index) => (
             <div
-              key={index}
+            key={token.id}
               style={{
                 position: 'absolute',
-                top: '500px',
+                top: `${token.top}px`,
                 left: `${token.left}px`,
                 width: '40px',
                 height: '40px',
@@ -77,7 +119,6 @@ function App() {
           ))}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-          
   <button
     style={{ margin: '20px', backgroundColor: 'lightblue', width: '100px', height: '40px', borderRadius: '20px', fontWeight: 'bold', fontSize: '15px' }}
     onClick={rollDice}
@@ -97,7 +138,6 @@ function App() {
       
       </div>
     </div>
-    </view>
   );
 }
 
