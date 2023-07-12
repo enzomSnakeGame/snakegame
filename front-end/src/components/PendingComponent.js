@@ -1,11 +1,14 @@
 // import { data } from 'browserslist';
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
+
 
 const PendingPage = () => {
   const [points, setPoints] = useState("..."); // Initial state with three dots
   const [statusGame, setStatusGame] = useState("");
   const navigate = useNavigate();
+  
+  const gameId = 1;
   useEffect(() => {
     // Function to update the points every second
     const interval = setInterval(() => {
@@ -42,7 +45,7 @@ const PendingPage = () => {
     await fetch(url, {
       method: "POST",
       headers: headers,
-      body: JSON.stringify({ gameId: 1 }), // Replace 'your_game_id' with the actual game ID
+      body: JSON.stringify({ gameId}), // Replace 'your_game_id' with the actual game ID
     })
       .then((response) => response.json())
       .then((data) => {
@@ -50,8 +53,14 @@ const PendingPage = () => {
           // 22t3lo estana
         } else {
           console.log(data);
+          console.log(data.capacity)
+          sessionStorage.setItem("capacity",data.capacity );
+          sessionStorage.setItem("turn",data.turn);
+          sessionStorage.setItem("gameId",gameId);
           let path = `/board`;
           navigate(path);
+          // Pass the data as state when navigating to the '/board' route
+     
         }
         console.log(data);
         //setStatusGame(data);
