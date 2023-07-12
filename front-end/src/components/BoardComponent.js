@@ -1,9 +1,9 @@
 import React, { useState,useEffect  } from 'react';
 import {  socket } from '../App';
 
-socket.on("make-move", (data) => {
+// socket.on("make-move", (data) => {
   
-});
+// });
 
 
 const colors = ['teal', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'cyan', 'magenta', 'lime'];
@@ -34,6 +34,7 @@ function App() {
   const [countdown, setCountdown] = useState(10);
   const [currentPlayer, setCurrentPlayer] = useState(1);
   const [playerTokens, setPlayerTokens] = useState(generatePlayerTokens(numTokens));
+
   socket.on("make-move", (data) => {
     setDiceNumber(data.dice);
     setPlayerPosition(data.playerPosition)

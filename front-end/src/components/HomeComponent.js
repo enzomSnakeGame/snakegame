@@ -65,12 +65,11 @@ function App() {
     }
 
   useEffect(() => {
-   
     fetchData()    
   }, []);
 
   // useEffect(() => {
-  //   const data = [
+  //   const data = [ 
   //     {
   //       capacity: 4,
   //       currentUsers: 4
