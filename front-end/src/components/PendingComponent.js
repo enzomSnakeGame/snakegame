@@ -1,14 +1,17 @@
 // import { data } from 'browserslist';
 import React, { useState, useEffect } from "react";
 import { useNavigate} from "react-router-dom";
-
+import { useLocation } from 'react-router-dom';
 
 const PendingPage = () => {
   const [points, setPoints] = useState("..."); // Initial state with three dots
   const [statusGame, setStatusGame] = useState("");
   const navigate = useNavigate();
-  
-  //const gameId = 3;
+  const location = useLocation();
+   const gameId = location.state;
+
+console.log("the recieved game id is :------------- " + gameId); 
+
   useEffect(() => {
     // Function to update the points every second
     const interval = setInterval(() => {
@@ -41,7 +44,6 @@ const PendingPage = () => {
         authorization: sessionStorage.getItem("token"),
       };
     }
-   const gameId =3;
     await fetch(url, {
       method: "POST",
       headers: headers,
