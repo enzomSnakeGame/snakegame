@@ -21,7 +21,7 @@ exports.createGame = async (req, res) => {
       const gameId = req.body.gameId;
       const playerId = req.playerId;
       console.log(gameId);
-      const result = await gameService.joinGame(gameId, playerId);
+      const result = await gameService.joinGame(gameId.gameId, playerId);
   
       if (result === "Joined the game") {
         res.status(200).json({ message: "Successfully joined the game" });
