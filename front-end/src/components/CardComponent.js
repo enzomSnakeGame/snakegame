@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import {  socket } from '../App';
 
 
 export default function App({ capacity, idRoom   }) {
@@ -8,18 +9,19 @@ export default function App({ capacity, idRoom   }) {
   const navigate = useNavigate();
 
     // setRoomNumber(idRoom);
-
+  const gameId ={ "gameId": idRoom } ; 
    const routeChange = () =>{ 
     let path = `/Pending`; 
-    navigate(path);
+    let state = gameId.gameId;
+    navigate(path, { state });
+    // navigate(path);
   }
+  
 
   const handelClick= ()=>{
     routeChange() ; 
     fetchData()   
   }
-
-  const gameId ={ "gameId": idRoom } ; 
 
   const fetchData = async () => {
     console.log(gameId) ; 
@@ -37,7 +39,8 @@ export default function App({ capacity, idRoom   }) {
         body: JSON.stringify({gameId})
       }).then(response => response.json())
       .then(data => {
-         console.log(" revieved data  "+ data);
+         console.log(data);
+          socket.emit('join-game' , data.gameid);
       }).catch(error => {
           // Handle error
           console.log(error) ; 
