@@ -1,5 +1,5 @@
 import React, { useState,useEffect  } from 'react';
-
+import { socket } from '../App';
 
 const colors = ['teal', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'cyan', 'magenta', 'lime'];
 
@@ -72,6 +72,7 @@ function App() {
           .catch(error => {
             // Handle error
           });
+      
       // Handle the API response data
       const randomNumber = Math.floor(Math.random() * 6) + 1;
       setDiceNumber(randomNumber);

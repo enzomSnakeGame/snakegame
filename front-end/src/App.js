@@ -4,6 +4,8 @@ import SignupPage from './pages/Signup';
 import LoginPage from './pages/Login';
 import BoardPage from './pages/Board';
 import CardPage from './pages/Card';
+import {io} from 'socket.io-client'
+const socket = io("http://localhost:3001");
 
 function App() {
   return (
@@ -32,4 +34,5 @@ function App() {
   );
 }
 
+export {socket};
 export default App;
