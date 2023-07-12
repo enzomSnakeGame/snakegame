@@ -21,7 +21,7 @@ exports.createGame = async (req, res) => {
       const gameId = req.body.gameId;
       const playerId = req.playerId;
       console.log(gameId);
-      const result = await gameService.joinGame(gameId, playerId);
+      const result = await gameService.joinGame(gameId.gameId, playerId);
   
       if (result === "Joined the game") {
         res.status(200).json({ message: "Successfully joined the game" });
@@ -54,7 +54,7 @@ exports.createGame = async (req, res) => {
       res.status(200).json(game);
     } catch (error) {
       console.error("Error starting game:", error);
-      res.status(500).json({ error: "Failed to start game" });
+      res.status(500).json({ "error": "Failed to start game" });
     }
   };
 
@@ -91,7 +91,7 @@ exports.checkPlayerStatus = async (req, res) => {
   // Take a turn
 exports.takeTurn = async (req, res) => {
     try {
-      const playerId = req.body.playerId;
+      const playerId = req.playerId;
       const gameId = req.body.gameId;
       const turnResult = await gameService.Turn(gameId,playerId);
       res.status(200).json(turnResult);
@@ -114,7 +114,9 @@ exports.checkOrderController = async (req, res) => {
   
   const playerId = req.body.playerId;
   const gameId = req.body.gameId;
-
+  console.log("turn check")
+  console.log(playerId);
+  console.log(gameId);
   try {
     const result = await gameService.checkOrder(playerId, gameId);
 

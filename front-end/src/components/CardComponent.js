@@ -1,22 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-export default function App({ capacity, currentUsers }) {
-  const [roomNumber, setRoomNumber] = useState(1);
+
+
+export default function App({ capacity, idRoom   }) {
+  const [roomNumber, setRoomNumber] = useState(idRoom);
+  const [Data, setData] = useState(1);
   const navigate = useNavigate();
 
-  const incrementRoomNumber = () => {
-    setRoomNumber(roomNumber + 1);
-  };
+    // setRoomNumber(idRoom);
 
-  const routeChange = () =>{ 
+   const routeChange = () =>{ 
     let path = `/Pending`; 
     navigate(path);
   }
 
   const handelClick= ()=>{
-    incrementRoomNumber() ; 
     routeChange() ; 
+    fetchData()   
   }
+
+  const gameId ={ "gameId": idRoom } ; 
+
+  const fetchData = async () => {
+    console.log(gameId) ; 
+      const url = 'http://localhost:3000/game/games/join' ; 
+      let headers = {}
+      if (sessionStorage.getItem('token')) {
+          headers['authorization']= sessionStorage.getItem('token')  ;
+      }
+       fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'authorization': sessionStorage.getItem('token')
+        },
+        body: JSON.stringify({gameId})
+      }).then(response => response.json())
+      .then(data => {
+         console.log(" revieved data  "+ data);
+      }).catch(error => {
+          // Handle error
+          console.log(error) ; 
+        });
+  };
+
+  
 
   return (
     <div style={{ textAlign: 'center' }}>

@@ -1,3 +1,4 @@
+const { cp } = require("fs");
 const Game = require("../models/Game");
 const Usergame = require("../models/Usergame");
 // Create a game
@@ -116,15 +117,17 @@ exports.startGame = async (gameId) => {
 exports.Turn = async (idroom, playerId) => {
   try {
     // Get the current game
+    console.log(playerId)
+    console.log(idroom)
     const userGame = await Usergame.findOne({ where: { idroom: idroom, id: playerId } });
     if (!userGame) {
       throw new Error("Player not found");
     }
-
+ 
     const roomId = userGame.idroom;
-
+     
     // Get the current game based on the roomId
-    const game = await Game.findOne({ where: { idRoom: roomId } });
+    const game = await Game.findOne({ where: { idRoom: idroom } });
 
     if (!game) {
       throw new Error("Game not found");
@@ -132,13 +135,17 @@ exports.Turn = async (idroom, playerId) => {
 
     // Get the next player's order
     let nextOrder = userGame.order + 1;
+    
+    
+    console.log(game.capacity)
     if (nextOrder > game.capacity) {
       nextOrder = 1; // Reset to the first player's order
     }
-
+    console.log(nextOrder);
     // Check if the next player's position is 100
     const nextPlayer = await Usergame.findOne({ where: { idroom: idroom, order: nextOrder } });
-    if (nextPlayer && nextPlayer.position === 100) {
+    console.log(nextPlayer.playerposition);
+    if (nextPlayer.playerposition === 100) {
       // If the next player's position is 100, then get the next valid order
       do {
         nextOrder++;
@@ -153,11 +160,11 @@ exports.Turn = async (idroom, playerId) => {
     }
 
     // Update the turn to the next player's order
-    
+   
     await game.update({ turn: nextOrder });
 
     // Return the updated turn
-    return nextTurn;
+    return nextOrder;
   } catch (error) {
     // Handle errors
     throw error;
@@ -230,6 +237,8 @@ exports.updateGameStatusTo0= async (gameId)=> {
 
 exports.checkOrder = async(playerId,gameId)=>{
   try {
+    console.log(playerId);
+    console.log(gameId);
     const usergame = await Usergame.findOne({ where: { id: playerId, idroom: gameId } });
 
     if (!usergame) {
@@ -241,7 +250,9 @@ exports.checkOrder = async(playerId,gameId)=>{
     if (!game) {
       throw new Error('Game not found');
     }
-
+    console.log("ggg")
+    console.log(usergame.order);
+    console.log(game.turn);
     if (usergame.order === game.turn) {
       console.log('Order matches the turn');
       const turnResult = await this.Turn(gameId,playerId);
@@ -259,11 +270,12 @@ exports.checkOrder = async(playerId,gameId)=>{
 exports.endDate = async (gameId) => {
   try {
     // Get the current game
+    const { Op } = require('sequelize');
     const game = await Game.findByPk(gameId);
     if (!game) {
       throw new Error("Game not found");
     }
-
+   
     const playerCount = await Usergame.count({
       where: {
         idroom: gameId,

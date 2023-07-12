@@ -1,9 +1,7 @@
 import React, { useState,useEffect  } from 'react';
 import {  socket } from '../App';
+import { useNavigate } from "react-router-dom";
 
-// socket.on("make-move", (data) => {
-  
-// });
 
 
 const colors = ['teal', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'cyan', 'magenta', 'lime'];
@@ -28,13 +26,20 @@ const generatePlayerTokens = (numTokens) => {
   return playerTokens;
 };
 function App() {
+  
   const [diceNumber, setDiceNumber] = useState(null);
   const [playerposition, setPlayerPosition] = useState(null);
-  const [numTokens, setnumTokens] = useState(10);
+  const [numTokens, setnumTokens] = useState(parseInt(sessionStorage.getItem("capacity")));
   const [countdown, setCountdown] = useState(10);
-  const [currentPlayer, setCurrentPlayer] = useState(1);
+  const [currentPlayer, setCurrentPlayer] = useState(parseInt(sessionStorage.getItem("turn")));
   const [playerTokens, setPlayerTokens] = useState(generatePlayerTokens(numTokens));
 
+  const navigate = useNavigate();
+  socket.on('end-game',(data) => {
+    let path = `/home`; 
+    navigate(path);
+    console.log(data);
+  })
   socket.on("make-move", (data) => {
     setDiceNumber(data.dice);
     setPlayerPosition(data.playerPosition)
@@ -75,9 +80,10 @@ function App() {
     }
   }, [countdown]);
   const rollDice = async () => {
+    console.log(sessionStorage.getItem("gameId"),"gwaaa", sessionStorage.getItem("capacity"),sessionStorage.getItem("turn"))
     try {
         const fetch = require('node-fetch');
-        const idRoom = 1;
+        const idRoom = parseInt(sessionStorage.getItem("gameId"));
         const turn = currentPlayer;
         let flag = turn ;
         const url = 'http://localhost:3000/game/games/checkOrder';
@@ -87,22 +93,23 @@ function App() {
         // player id will be removed also game id will be varible for part of start game
         const data = {
           playerId: 5,
-          gameId: 4
+          gameId: parseInt(sessionStorage.getItem("gameId")),
         };
         // game id will be varible for part of start game and turn 
         const data1 = {
-            idRoom: 4,
+            idRoom:  parseInt(sessionStorage.getItem("gameId")),
             turn: currentPlayer
           };
        // game id will be varible for part of start game 
           const data2 = {
-            gameId: 4,
+            gameId: parseInt(sessionStorage.getItem("gameId")),
           }; 
            
        await fetch(url, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'authorization': sessionStorage.getItem('token')
           },
           body: JSON.stringify(data)
         })
@@ -117,7 +124,9 @@ function App() {
                  fetch(url1, {
                     method: 'POST',
                     headers: {
-                      'Content-Type': 'application/json'
+                      'Content-Type': 'application/json',
+                      'authorization': sessionStorage.getItem('token')
+
                     },
                     body: JSON.stringify(data1)
                   })
@@ -128,14 +137,17 @@ function App() {
                        setDiceNumber(data.dice);
                        setPlayerPosition(data.playerPosition)
                        movePlayerToken(turn, data.playerPosition);
+                      //  if(data.flag === true){
+                      //     socket.emit('end-game',{gameId: 1})
+                      //  }
                       //  socket.emit('make-move', { gameId: 1, position: data.playerPosition, dice: data.dice , turn: turn , nextturn: flag});
-                       console.log(flag)
                        setCurrentPlayer(flag)
                        setCountdown(10);
                        fetch(url3, {
                         method: 'POST',
                         headers: {
-                          'Content-Type': 'application/json'
+                          'Content-Type': 'application/json',
+                          'authorization': sessionStorage.getItem('token')
                         },
                         body: JSON.stringify(data2)
                       })
@@ -164,15 +176,23 @@ function App() {
     }
   };
   const movePlayerToken = (id, index) => {
+    console.log("ffff")
+    console.log(id)
+    console.log(index)
+    //let index2 = 1
+    //console.log(index2)
     const currentPlayerTokenIndex = playerTokens.findIndex(token => token.id === id);
-    if (currentPlayerTokenIndex !== -1 && index!=-1) {
+
+
+    if (currentPlayerTokenIndex !== -1 && index!==-1) {
+
       const updatedPlayerTokens = [...playerTokens];
       let left2 = Math.floor((index-1)/10);
       let top2 = 0;
       if(left2%2 !==0)
       {
         console.log("here")
-        top2 = (index-1)%10;
+        top2 = (index-1)%10
         top2 = 11-top2-2;
       }
       else
@@ -201,14 +221,14 @@ function App() {
       }
       else
       {
-
+        console.log("hena")
         console.log(left2)
         console.log(top2)
         
         if(top2!==0 && left2===0)
         {
             newPosition = (top2 * 50) ;
-            newpost =0;
+            newpost =450;
             updatedPlayerTokens[currentPlayerTokenIndex].left = newPosition;
             updatedPlayerTokens[currentPlayerTokenIndex].top = newpost;
             setPlayerTokens(updatedPlayerTokens);
