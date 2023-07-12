@@ -91,7 +91,7 @@ exports.checkPlayerStatus = async (req, res) => {
   // Take a turn
 exports.takeTurn = async (req, res) => {
     try {
-      const playerId = req.body.playerId;
+      const playerId = req.playerId;
       const gameId = req.body.gameId;
       const turnResult = await gameService.Turn(gameId,playerId);
       res.status(200).json(turnResult);
