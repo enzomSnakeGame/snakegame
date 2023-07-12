@@ -1,4 +1,6 @@
 import React, { useState,useEffect  } from 'react';
+import { socket } from '../App';
+
 const colors = ['teal', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'cyan', 'magenta', 'lime'];
 const generatePlayerTokens = (numTokens) => {
   const increaseLeftBy = 50;
@@ -193,6 +195,7 @@ function App() {
         console.log(updatedPlayerTokens[currentPlayerTokenIndex].top)
         
       }
+
 
       const updated2PlayerTokens = playerTokens.map(token => {
         if (token.top === 500) {

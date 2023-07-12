@@ -6,6 +6,8 @@ import BoardPage from './pages/Board';
 import CardPage from './pages/Card';
 import HomePage  from  './pages/Home'
 import Navbar  from './components/NavBar';
+import {io} from 'socket.io-client'
+const socket = io("http://localhost:3001");
 
 function App() {
   return (
@@ -39,4 +41,5 @@ function App() {
   );
 }
 
+export {socket};
 export default App;

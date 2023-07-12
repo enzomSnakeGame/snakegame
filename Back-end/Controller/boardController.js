@@ -1,6 +1,5 @@
 const BoardService = require('../Services/Board');
 
-
 // Controller for creating a new board
 exports.createBoard = async (req, res) => {
     const { imagePath } = req.body;
