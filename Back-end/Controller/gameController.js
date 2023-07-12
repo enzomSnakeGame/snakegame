@@ -77,7 +77,7 @@ exports.checkPlayerStatus = async (req, res) => {
       const result = await gameService.checkPlayerStatus(gameId,playerId);
   
       if (result === "Player did not play") {
-        res.status(200).json({ message: "Player did not play" });
+        res.status(200).json({ message: "Player did not play"});
       } else {
         res.status(200).json(result);
       }
@@ -91,7 +91,7 @@ exports.checkPlayerStatus = async (req, res) => {
   // Take a turn
 exports.takeTurn = async (req, res) => {
     try {
-      const playerId = req.playerId;
+      const playerId = req.body.playerId;
       const gameId = req.body.gameId;
       const turnResult = await gameService.Turn(gameId,playerId);
       res.status(200).json(turnResult);
@@ -112,14 +112,15 @@ exports.takeTurn = async (req, res) => {
 
 exports.checkOrderController = async (req, res) => {
   
-  const playerId = req.playerId;
+  const playerId = req.body.playerId;
   const gameId = req.body.gameId;
 
   try {
     const result = await gameService.checkOrder(playerId, gameId);
 
-    if (result === 'Matches') {
-      return res.status(200).json({ message: 'Order matches the turn' });
+    if (result !== 'Not Matches') {
+      console.log(result)
+      return res.status(200).json({ message: 'Order matches the turn' ,nextturn:result});
     } else {
       return res.status(200).json({ message: 'Order does not match the turn' });
     }

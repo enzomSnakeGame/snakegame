@@ -4,33 +4,40 @@ import SignupPage from './pages/Signup';
 import LoginPage from './pages/Login';
 import BoardPage from './pages/Board';
 import CardPage from './pages/Card';
+import HomePage  from  './pages/Home'
+import Navbar  from './components/NavBar';
 import {io} from 'socket.io-client'
 const socket = io("http://localhost:3001");
 
 function App() {
   return (
     <div>
-
+   
 <BrowserRouter>
         <Routes>
         <Route path="/board" element={<BoardPage/>} />
+        <Route path="Home/" element={<HomePage/>}/>
         </Routes>
       </BrowserRouter> 
          <div className="min-h-full h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div className="max-w-md w-full space-y-8">
-     <BrowserRouter>
-        <Routes>
-            <Route path="/" element={<LoginPage/>} />
-            <Route path="/signup" element={<SignupPage/>} />
-           
-            <Route path="Card/" element={<CardPage/>}/>
-        </Routes>
-      </BrowserRouter>
+          <header>
+            <Navbar/>
+          </header>
+      <div className="min-h-full h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <BrowserRouter>
+          <Routes>
+              <Route path="/" element={<LoginPage/>} />
+              <Route path="/signup" element={<SignupPage/>} />
+            
+              <Route path="Card/" element={<CardPage/>}/>
+              
+          </Routes>
+        </BrowserRouter>
     </div>
   </div>
     </div>
-   
-
+  </div>
   );
 }
 

@@ -114,6 +114,7 @@ exports.startGame = async (gameId) => {
 
 
 exports.Turn = async (idroom,playerId) => {
+ 
   try {
     // Get the current game
     const userGame = await Usergame.findOne({ where: { idroom: idroom, id: playerId } });
@@ -132,11 +133,11 @@ exports.Turn = async (idroom,playerId) => {
     // Update the turn to the next player's order
     const nextTurn = ((game.turn % userGame.order) + 2 ) % (game.capacity+1);
     if(nextTurn>game)
-    console.log(nextTurn);
+    
     await game.update({ turn: nextTurn });
 
     // Return the updated turn
-    return { turn: nextTurn };
+    return nextTurn;
   } catch (error) {
     // Handle errors
     throw error;
@@ -224,7 +225,9 @@ exports.checkOrder = async(playerId,gameId)=>{
 
     if (usergame.order === game.turn) {
       console.log('Order matches the turn');
-      return "Matches"
+      const turnResult = await this.Turn(gameId,playerId);
+       console.log(turnResult)
+      return turnResult;
     } else {
       console.log('Order does not match the turn');
     }
