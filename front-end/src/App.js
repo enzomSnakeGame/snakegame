@@ -17,6 +17,7 @@ function App() {
 
   const data =   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFiZmphZGF2amprbGxvb0BnbWFpbC5jb20iLCJpYXQiOjE2ODkxNjc0MTUsImV4cCI6MTY4OTIzOTQxNX0.wRMrEBVTS41IB1UUg2EIrVqoR1vMiiGlkQ90FT0maPA"
    sessionStorage.setItem('token',data);
+
   return (
     <div>
    
