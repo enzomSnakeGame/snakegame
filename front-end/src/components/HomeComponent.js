@@ -56,9 +56,14 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         // Set the fetched data to the state
-        console.log(data)
-        setCards(data);
-      })
+        if (data === null) {
+          console.log('Received null data');
+        } else {
+          // Set the fetched data to the state
+          console.log(data);
+          setCards(data); 
+      }}
+      )
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
