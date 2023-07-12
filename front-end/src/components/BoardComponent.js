@@ -165,7 +165,7 @@ function App() {
   };
   const movePlayerToken = (id, index) => {
     const currentPlayerTokenIndex = playerTokens.findIndex(token => token.id === id);
-    if (currentPlayerTokenIndex !== -1 && index!=-1) {
+    if (currentPlayerTokenIndex !== -1 && index!==-1) {
       const updatedPlayerTokens = [...playerTokens];
       let left2 = Math.floor((index-1)/10);
       let top2 = 0;
