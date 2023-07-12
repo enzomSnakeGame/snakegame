@@ -3,6 +3,8 @@ import {Routes, Route} from "react-router-dom";
 import SignupPage from './pages/Signup';
 import LoginPage from './pages/Login';
 import BoardPage from './pages/Board';
+// import CardPage from './pages/Card';
+
 import PendingPage from './pages/pending'
 import HomePage  from  './pages/Home'
 import Navbar  from './components/NavBar';
@@ -10,6 +12,7 @@ import {io} from 'socket.io-client'
 const socket = io("http://localhost:3001");
 
 function App() {
+  
   // if(!sessionStorage){
   //   console.log("tesst0");
   //   console.log(sessionStorage);

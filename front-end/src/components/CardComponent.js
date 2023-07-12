@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import {  socket } from '../App';
 
 
-export default function App({ capacity, idRoom   }) {
+export default function App({ capacity, idRoom , remaining   }) {
+
   const [roomNumber, setRoomNumber] = useState(idRoom);
   const [Data, setData] = useState(1);
   const navigate = useNavigate();
@@ -63,6 +64,7 @@ export default function App({ capacity, idRoom   }) {
         <h3 style={{ fontSize: '24px', fontWeight: 'bold', color: 'blue', marginBottom: '10px' }}>Room {roomNumber}</h3>
         <p style={{ marginBottom: '10px' }}>
           Capacity: {capacity}<br />
+          remainning : {remaining}<br />
         </p>
         {/* <div>
           <h3></h3>

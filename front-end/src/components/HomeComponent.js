@@ -165,6 +165,7 @@ function App() {
             <CardComponent
               capacity={card.capacity}
               idRoom={card.idRoom}
+              remaining ={card.capacity - card.currentUser}
             />
           </div>
         ))}
