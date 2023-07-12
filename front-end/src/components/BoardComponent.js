@@ -35,6 +35,7 @@ function App() {
   const [currentPlayer, setCurrentPlayer] = useState(1);
   const [playerTokens, setPlayerTokens] = useState(generatePlayerTokens(numTokens));
 
+  
   socket.on("make-move", (data) => {
     setDiceNumber(data.dice);
     setPlayerPosition(data.playerPosition)

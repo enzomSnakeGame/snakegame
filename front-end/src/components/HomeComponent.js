@@ -7,7 +7,6 @@ import '../Styles/home.css'; // Import the CSS file
 
 
 
-
 function App() {
   const navigate = useNavigate();
   
@@ -165,7 +164,7 @@ function App() {
           <div className="card" key={index}>
             <CardComponent
               capacity={card.capacity}
-              currentUsers={card.currentUsers}
+              idRoom={card.idRoom}
             />
           </div>
         ))}
