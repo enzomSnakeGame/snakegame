@@ -2,6 +2,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate} from "react-router-dom";
 import { useLocation } from 'react-router-dom';
+import { socket } from "../App";
+
+socket.on('join-game', (data) => { // data will send here is capacity
+  console.log(data);
+});
+
 
 const PendingPage = () => {
   const [points, setPoints] = useState("..."); // Initial state with three dots
@@ -11,6 +17,12 @@ const PendingPage = () => {
    const gameId = location.state;
 
 console.log("the recieved game id is :------------- " + gameId); 
+socket.on('start-game', (data) => {
+  // make client navigate to board page
+  // let path = `/board`;
+  // navigate(path);
+  console.log(data);
+});
 
   useEffect(() => {
     // Function to update the points every second
@@ -62,7 +74,7 @@ console.log("the recieved game id is :------------- " + gameId);
           let path = `/board`;
           navigate(path);
           // Pass the data as state when navigating to the '/board' route
-     
+          socket.emit("start-game", data.gameid);
         }
         console.log(data);
         //setStatusGame(data);

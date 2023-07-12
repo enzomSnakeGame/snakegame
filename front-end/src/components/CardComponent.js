@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import {  socket } from '../App';
 
 
 export default function App({ capacity, idRoom   }) {
@@ -15,6 +16,7 @@ export default function App({ capacity, idRoom   }) {
     navigate(path, { state });
     // navigate(path);
   }
+  
 
   const handelClick= ()=>{
     routeChange() ; 
@@ -38,6 +40,7 @@ export default function App({ capacity, idRoom   }) {
       }).then(response => response.json())
       .then(data => {
          console.log(data);
+          socket.emit('join-game' , data.gameid);
       }).catch(error => {
           // Handle error
           console.log(error) ; 
