@@ -42,9 +42,10 @@ io.on('connection', (socket) => {
     // it send through event make-move to make other user make move
     socket.on('make-move', (data) => { // data will send here is new position of player and identifier for this player "I don't what it's till now" and gameId
         console.log(data);
-        socket.broadcast.to(data.gameId).emit('make-move',data.position); // send to all clients in room except sender
+        socket.broadcast.to(data.gameId).emit('make-move',{ position: data.position, dice: data.dice , turn: data.turn , nextturn: data.nextturn}); // send to all clients in room except sender
     });
 });
+
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
