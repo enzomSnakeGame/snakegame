@@ -1,11 +1,7 @@
 import React, { useState,useEffect  } from 'react';
-
-
 const colors = ['teal', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'cyan', 'magenta', 'lime'];
-
 const generatePlayerTokens = (numTokens) => {
   const increaseLeftBy = 50;
-  
   let playerTokens = [];
   if (numTokens > 0) {
     let remainingColors = [...colors]; // Copy the colors array
@@ -24,10 +20,8 @@ const generatePlayerTokens = (numTokens) => {
   }
   return playerTokens;
 };
-
 function App() {
   const [diceNumber, setDiceNumber] = useState(null);
-  
   const [playerposition, setPlayerPosition] = useState(null);
   const [numTokens, setnumTokens] = useState(10);
   const [countdown, setCountdown] = useState(10);
@@ -41,35 +35,28 @@ function App() {
 
       return () => clearTimeout(timer);
     }
-  }, [countdown]);
-
-  
+  }, [countdown]); 
   const rollDice = async () => {
     try {
-     
-
         const fetch = require('node-fetch');
-
         const idRoom = 1;
         const turn = currentPlayer;
-       
         let flag = turn ;
-      
         const url = 'http://localhost:3000/game/games/checkOrder';
         const url1 = 'http://localhost:3000/game/play';
-        
         const url3 = 'http://localhost:3000/game/games/status/update';
+        //todo part of check each 10 second and socket and to think what to do when player finish the game.
+        // player id will be removed also game id will be varible for part of start game
         const data = {
           playerId: 5,
           gameId: 4
         };
-
+        // game id will be varible for part of start game and turn 
         const data1 = {
             idRoom: 4,
             turn: currentPlayer
           };
-        
-
+       // game id will be varible for part of start game 
           const data2 = {
             gameId: 4,
           };  
@@ -120,7 +107,6 @@ function App() {
                     }).catch(error => {
                         // Handle error
                       });
-
             }
             else
             {
@@ -129,18 +115,8 @@ function App() {
           })
           .catch(error => {
             // Handle error
-          });
-      
-        
-
-
-         
-          
-     
-      
+          }); 
       // Move player token based on the API response
-     
-      
     } catch (error) {
       console.error(error);
       // Handle any errors that occur during the API call
