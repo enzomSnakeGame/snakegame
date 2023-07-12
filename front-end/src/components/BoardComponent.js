@@ -58,20 +58,20 @@ function App() {
           turn: turn
         };
         
-        fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        })
-          .then(response => response.json())
-          .then(data => {
-            // Handle response data
-          })
-          .catch(error => {
-            // Handle error
-          });
+        // fetch(url, {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json'
+        //   },
+        //   body: JSON.stringify(data)
+        // })
+        //   .then(response => response.json())
+        //   .then(data => {
+        //     // Handle response data
+        //   })
+        //   .catch(error => {
+        //     // Handle error
+        //   });
       
       // Handle the API response data
       const randomNumber = Math.floor(Math.random() * 6) + 1;
@@ -88,7 +88,7 @@ function App() {
   };
   const movePlayerToken = (id, index) => {
     id =1;
-    index = 1;
+    index = 41;
     const currentPlayerTokenIndex = playerTokens.findIndex(token => token.id === id);
     if (currentPlayerTokenIndex !== -1) {
       const updatedPlayerTokens = [...playerTokens];
@@ -96,6 +96,7 @@ function App() {
       let top2 = 0;
       if(left2%2 !==0)
       {
+        console.log("here")
         top2 = (index-1)%10;
         top2 = 11-top2-2;
       }
@@ -103,15 +104,63 @@ function App() {
       {
          top2 = (index-1)%10;
       }
-      
-      left2 = left2+1;
-      top2 = top2 +1;
-      const newPosition = updatedPlayerTokens[currentPlayerTokenIndex].left + (top2 * 50) ;
-      const newpost = updatedPlayerTokens[currentPlayerTokenIndex].top - left2*50;
-      updatedPlayerTokens[currentPlayerTokenIndex].left = newPosition;
-      updatedPlayerTokens[currentPlayerTokenIndex].top = newpost;
+      console.log(left2)
+      console.log(top2)
+      let newPosition
+      let  newpost
+      if(updatedPlayerTokens[currentPlayerTokenIndex].top === 500)
+      {
+        left2 = left2+1;
+        top2 = top2 +1;
+        console.log(updatedPlayerTokens[currentPlayerTokenIndex].left)
+        console.log(updatedPlayerTokens[currentPlayerTokenIndex].top)
+        console.log(left2)
+        console.log(top2)
+         newPosition = updatedPlayerTokens[currentPlayerTokenIndex].left + (top2 * 50) ;
+         newpost = updatedPlayerTokens[currentPlayerTokenIndex].top - left2*50;
+        updatedPlayerTokens[currentPlayerTokenIndex].left = newPosition;
+        updatedPlayerTokens[currentPlayerTokenIndex].top = newpost;
+        console.log(updatedPlayerTokens[currentPlayerTokenIndex].left)
+        console.log(updatedPlayerTokens[currentPlayerTokenIndex].top)
+        setPlayerTokens(updatedPlayerTokens);
+      }
+      else
+      {
 
-      setPlayerTokens(updatedPlayerTokens);
+        console.log(left2)
+        console.log(top2)
+        
+        if(top2!==0 && left2===0)
+        {
+            newPosition = (top2 * 50) ;
+            newpost =0;
+            updatedPlayerTokens[currentPlayerTokenIndex].left = newPosition;
+            updatedPlayerTokens[currentPlayerTokenIndex].top = newpost;
+            setPlayerTokens(updatedPlayerTokens);
+        }
+        else if(top2===0 && left2!==0)
+        {
+            newpost =450- left2*50;
+            newPosition = 0 ;
+            updatedPlayerTokens[currentPlayerTokenIndex].left = newPosition;
+            updatedPlayerTokens[currentPlayerTokenIndex].top = newpost;
+            setPlayerTokens(updatedPlayerTokens);
+        }
+        else
+        {
+            newPosition = (top2 * 50) ;
+            newpost =  450-left2*50;
+            updatedPlayerTokens[currentPlayerTokenIndex].left = newPosition;
+            updatedPlayerTokens[currentPlayerTokenIndex].top = newpost;
+            setPlayerTokens(updatedPlayerTokens);
+        }
+        
+        console.log(updatedPlayerTokens[currentPlayerTokenIndex].left)
+        console.log(updatedPlayerTokens[currentPlayerTokenIndex].top)
+        
+      }
+      
+    
 
       const updated2PlayerTokens = playerTokens.map(token => {
         if (token.top === 500) {
