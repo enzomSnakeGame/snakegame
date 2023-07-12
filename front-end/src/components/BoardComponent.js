@@ -93,6 +93,7 @@ function App() {
                        movePlayerToken(turn, data.playerPosition);
                        console.log(flag)
                        setCurrentPlayer(flag)
+                       setCountdown(10);
                        fetch(url3, {
                         method: 'POST',
                         headers: {
