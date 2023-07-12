@@ -266,11 +266,12 @@ exports.checkOrder = async(playerId,gameId)=>{
 exports.endDate = async (gameId) => {
   try {
     // Get the current game
+    const { Op } = require('sequelize');
     const game = await Game.findByPk(gameId);
     if (!game) {
       throw new Error("Game not found");
     }
-
+   
     const playerCount = await Usergame.count({
       where: {
         idroom: gameId,

@@ -44,6 +44,11 @@ io.on('connection', (socket) => {
         console.log(data);
         socket.broadcast.to(data.gameId).emit('make-move',{ position: data.position, dice: data.dice , turn: data.turn , nextturn: data.nextturn}); // send to all clients in room except sender
     });
+    // c
+    socket.on('end-game',(data)=>{
+        console.log(data)
+        socket.to(data.gameId).emit('end-game',"change page")
+    })
 });
 
 
