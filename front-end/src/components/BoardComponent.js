@@ -1,6 +1,10 @@
 import React, { useState,useEffect  } from 'react';
 import { socket } from '../App';
 
+socket.on("make-move", (data) => {
+  
+});
+
 const colors = ['teal', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'cyan', 'magenta', 'lime'];
 const generatePlayerTokens = (numTokens) => {
   const increaseLeftBy = 50;
@@ -91,6 +95,7 @@ function App() {
                        setDiceNumber(data.dice);
                        setPlayerPosition(data.playerPosition)
                        movePlayerToken(turn, data.playerPosition);
+                       socket.emit('make-move', { gameId: 1, position: data.playerPosition, dice: data.dice , turn: turn , nextturn: flag});
                        console.log(flag)
                        setCurrentPlayer(flag)
                        fetch(url3, {
