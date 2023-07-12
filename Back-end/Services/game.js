@@ -113,7 +113,7 @@ exports.startGame = async (gameId) => {
 };
 
 
-exports.Turn = async (idroom,playerId) => {
+exports.Turn = async (idroom, playerId) => {
   try {
     // Get the current game
     const userGame = await Usergame.findOne({ where: { idroom: idroom, id: playerId } });
@@ -128,21 +128,41 @@ exports.Turn = async (idroom,playerId) => {
 
     if (!game) {
       throw new Error("Game not found");
-    }    
+    }
+
+    // Get the next player's order
+    let nextOrder = userGame.order + 1;
+    if (nextOrder > game.capacity) {
+      nextOrder = 1; // Reset to the first player's order
+    }
+
+    // Check if the next player's position is 100
+    const nextPlayer = await Usergame.findOne({ where: { idroom: idroom, order: nextOrder } });
+    if (nextPlayer && nextPlayer.position === 100) {
+      // If the next player's position is 100, then get the next valid order
+      do {
+        nextOrder++;
+        if (nextOrder > game.capacity) {
+          nextOrder = 1; // Reset to the first player's order
+        }
+        const player = await Usergame.findOne({ where: { idroom: idroom, order: nextOrder } });
+        if (!player || player.position !== 100) {
+          break;
+        }
+      } while (true);
+    }
+
     // Update the turn to the next player's order
-    const nextTurn = ((game.turn % userGame.order) + 2 ) % (game.capacity+1);
-    if(nextTurn>game)
-    console.log(nextTurn);
-    await game.update({ turn: nextTurn });
+    
+    await game.update({ turn: nextOrder });
 
     // Return the updated turn
-    return { turn: nextTurn };
+    return nextTurn;
   } catch (error) {
     // Handle errors
     throw error;
   }
 };
-
 
 exports.checkPlayerStatus = async (idroom,playerId) => {
   try {
@@ -171,7 +191,7 @@ exports.checkPlayerStatus = async (idroom,playerId) => {
 
       // Check if the game status has changed to 1
       if (updatedGame.status === 1) {
-        return updatedGame;
+        return "player play";
       }
 
       // Wait for 1 second before checking again
@@ -224,7 +244,9 @@ exports.checkOrder = async(playerId,gameId)=>{
 
     if (usergame.order === game.turn) {
       console.log('Order matches the turn');
-      return "Matches"
+      const turnResult = await this.Turn(gameId,playerId);
+       console.log(turnResult)
+      return turnResult;
     } else {
       console.log('Order does not match the turn');
     }
@@ -234,6 +256,33 @@ exports.checkOrder = async(playerId,gameId)=>{
   }
 }
 
+exports.endDate = async (gameId) => {
+  try {
+    // Get the current game
+    const game = await Game.findByPk(gameId);
+    if (!game) {
+      throw new Error("Game not found");
+    }
+
+    const playerCount = await Usergame.count({
+      where: {
+        idroom: gameId,
+        endDate: {
+          [Op.not]: null,
+        },
+      },
+    });
+
+    // Check if the player count is equal to the game capacity
+    if (playerCount === game.capacity) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 
 

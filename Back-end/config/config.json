@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "csed2024",
+    "password": "admin@123456",
     "database": "snake_ladder",
     "host": "127.0.0.1",
     "dialect": "mysql"
