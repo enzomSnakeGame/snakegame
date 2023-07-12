@@ -9,7 +9,7 @@ var gameRouter  = require('./Router/gameRouter');
 
 const io = require('socket.io')(3001,{
     cors: {
-        origin: ['http://localhost:3003'], // url of the react (Frontend) app
+        origin: ['http://localhost:3002'], // url of the react (Frontend) app
         methods: ['GET', 'POST'],
     }});
 

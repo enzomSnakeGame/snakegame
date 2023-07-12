@@ -26,11 +26,12 @@ const generatePlayerTokens = (numTokens) => {
   return playerTokens;
 };
 function App() {
+  
   const [diceNumber, setDiceNumber] = useState(null);
   const [playerposition, setPlayerPosition] = useState(null);
-  const [numTokens, setnumTokens] = useState(10);
+  const [numTokens, setnumTokens] = useState(parseInt(sessionStorage.getItem("capacity")));
   const [countdown, setCountdown] = useState(10);
-  const [currentPlayer, setCurrentPlayer] = useState(1);
+  const [currentPlayer, setCurrentPlayer] = useState(parseInt(sessionStorage.getItem("turn")));
   const [playerTokens, setPlayerTokens] = useState(generatePlayerTokens(numTokens));
 
   const navigate = useNavigate();
@@ -79,9 +80,10 @@ function App() {
     }
   }, [countdown]);
   const rollDice = async () => {
+    console.log(sessionStorage.getItem("gameId"),"gwaaa", sessionStorage.getItem("capacity"),sessionStorage.getItem("turn"))
     try {
         const fetch = require('node-fetch');
-        const idRoom = 1;
+        const idRoom = parseInt(sessionStorage.getItem("gameId"));
         const turn = currentPlayer;
         let flag = turn ;
         const url = 'http://localhost:3000/game/games/checkOrder';
@@ -95,12 +97,12 @@ function App() {
         };
         // game id will be varible for part of start game and turn 
         const data1 = {
-            idRoom: 4,
+            idRoom:  parseInt(sessionStorage.getItem("gameId")),
             turn: currentPlayer
           };
        // game id will be varible for part of start game 
           const data2 = {
-            gameId: 4,
+            gameId: parseInt(sessionStorage.getItem("gameId")),
           }; 
            
        await fetch(url, {
@@ -170,15 +172,23 @@ function App() {
     }
   };
   const movePlayerToken = (id, index) => {
+    console.log("ffff")
+    console.log(id)
+    console.log(index)
+    //let index2 = 1
+    //console.log(index2)
     const currentPlayerTokenIndex = playerTokens.findIndex(token => token.id === id);
+
+
     if (currentPlayerTokenIndex !== -1 && index!==-1) {
+
       const updatedPlayerTokens = [...playerTokens];
       let left2 = Math.floor((index-1)/10);
       let top2 = 0;
       if(left2%2 !==0)
       {
         console.log("here")
-        top2 = (index-1)%10;
+        top2 = (index-1)%10
         top2 = 11-top2-2;
       }
       else
@@ -207,7 +217,7 @@ function App() {
       }
       else
       {
-
+        console.log("hena")
         console.log(left2)
         console.log(top2)
         
