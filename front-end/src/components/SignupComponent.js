@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { signupFields } from "../constants/formFields"
 import FormAction from "./FormAction";
 import Input from "./Input";
+import { useNavigate } from "react-router-dom";
 
 const fields=signupFields;
 let fieldsState={};
@@ -10,7 +11,7 @@ fields.forEach(field => fieldsState[field.id]='');
 
 export default function SignupComponent(){
   const [signupState,setSignupState]=useState(fieldsState);
-
+  const navigate = useNavigate();
   const handleChange=(e)=>setSignupState({...signupState,[e.target.id]:e.target.value});
 
   const handleSubmit=(e)=>{
@@ -21,7 +22,7 @@ export default function SignupComponent(){
 
   //handle Signup API Integration here
   const createAccount=()=>{
-    const endpoint='http://localhost:3001/user/register';
+    const endpoint='http://localhost:3000/user/register';
       fetch(endpoint,
         {
         method:'POST',
@@ -32,7 +33,7 @@ export default function SignupComponent(){
         }).then(response=>response.json())
         .then(data=>{
           //API Success from LoginRadius Login API
-          console.log(data)
+          navigate("/");
         })
         .catch(error=>console.log(error))
   }

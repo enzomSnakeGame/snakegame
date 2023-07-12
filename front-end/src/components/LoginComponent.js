@@ -3,6 +3,7 @@ import { loginFields } from "../constants/formFields";
 import FormAction from "./FormAction";
 import FormExtra from "./FormExtra";
 import Input from "./Input";
+import { useNavigate } from "react-router-dom";
 
 const fields=loginFields;
 let fieldsState = {};
@@ -10,7 +11,7 @@ fields.forEach(field=>fieldsState[field.id]='');
 
 export default function LoginComponent(){
     const [loginState,setLoginState]=useState(fieldsState);
-
+    const navigate = useNavigate();
     const handleChange=(e)=>{
         setLoginState({...loginState,[e.target.id]:e.target.value})
     }
@@ -23,7 +24,7 @@ export default function LoginComponent(){
 
     //Handle Login API Integration here
     const authenticateUser = () =>{
-        const endpoint=`http://localhost:3001/user/login`;
+        const endpoint=`http://localhost:3000/user/login`;
         fetch(endpoint,
             {
                 method:'POST',
@@ -35,6 +36,7 @@ export default function LoginComponent(){
             .then(data=>{
                 sessionStorage.setItem('token',data.token);
                 //API Success from LoginRadius Login API
+                navigate("/home");
             })
             .catch(error=>console.log(error))
     }

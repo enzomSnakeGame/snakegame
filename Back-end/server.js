@@ -56,12 +56,8 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : false}));
 
-<<<<<<< HEAD
-const port = 3001 ;
 
-=======
 const port = 3000 ;
->>>>>>> main
 app.listen(port , ()=>{
 
     console.log('start listening ---------');
