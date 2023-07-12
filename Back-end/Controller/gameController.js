@@ -79,7 +79,7 @@ exports.checkPlayerStatus = async (req, res) => {
       if (result === "Player did not play") {
         res.status(200).json({ message: "Player did not play"});
       } else {
-        res.status(200).json(result);
+        res.status(200).json({message: "Player play"});
       }
     } catch (error) {
       console.error("Error checking game status:", error);

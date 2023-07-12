@@ -1,9 +1,7 @@
 import React, { useState,useEffect  } from 'react';
 import { socket } from '../App';
 
-socket.on("make-move", (data) => {
-  
-});
+
 
 const colors = ['teal', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'cyan', 'magenta', 'lime'];
 const generatePlayerTokens = (numTokens) => {
@@ -33,6 +31,36 @@ function App() {
   const [countdown, setCountdown] = useState(10);
   const [currentPlayer, setCurrentPlayer] = useState(1);
   const [playerTokens, setPlayerTokens] = useState(generatePlayerTokens(numTokens));
+  socket.on("make-move", (data) => {
+    setDiceNumber(data.dice);
+    setPlayerPosition(data.playerPosition)
+    movePlayerToken(data.turn, data.playerPosition);
+    setCurrentPlayer(data.nextturn)
+    setCountdown(10);
+    
+     const url4 = 'http://localhost:3000/game/games/status';
+     fetch(url4, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data.gameId)
+      })
+        .then(response => response.json())
+        .then(data => {
+           if(data.message !== "Player play")
+           { 
+              rollDice();
+           }
+        }).catch(error => {
+            // Handle error
+          });
+
+
+    
+    
+});
+
   useEffect(() => {
     if (countdown > 0) {
       const timer = setTimeout(() => {
