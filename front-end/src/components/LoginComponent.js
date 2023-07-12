@@ -33,7 +33,7 @@ export default function LoginComponent(){
                 body:JSON.stringify(loginState)
             }).then(response=>response.json())
             .then(data=>{
-                console.log(data)
+                sessionStorage.setItem('token',data.token);
                 //API Success from LoginRadius Login API
             })
             .catch(error=>console.log(error))
