@@ -4,10 +4,9 @@ import { useNavigate} from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 import { socket } from "../App";
 
-socket.on('join-game', (data) => { // data will send here is capacity
-  console.log(data);
-});
-
+// socket.on('join-game', (data) => { // data will send here is capacity
+//   console.log(data);
+// });
 
 const PendingPage = () => {
   const [points, setPoints] = useState("..."); // Initial state with three dots

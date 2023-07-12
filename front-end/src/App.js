@@ -8,11 +8,13 @@ import BoardPage from './pages/Board';
 import PendingPage from './pages/pending'
 import HomePage  from  './pages/Home'
 import Navbar  from './components/NavBar';
-import {io} from 'socket.io-client'
+
+import { io } from 'socket.io-client'
+
 const socket = io("http://localhost:3001");
 
 function App() {
-  
+
   // if(!sessionStorage){
   //   console.log("tesst0");
   //   console.log(sessionStorage);
@@ -33,9 +35,9 @@ function App() {
         <Route path="/Home" element={<HomePage/>}/>
       </Routes>
       <div className="min-h-full h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <header>
+        {/* <header>
           <Navbar/>
-        </header>
+        </header> */}
       <div className="min-h-full h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <Routes>
