@@ -37,7 +37,7 @@ function App() {
 
       return () => clearTimeout(timer);
     }
-  }, [countdown]); 
+  }, [countdown]);
   const rollDice = async () => {
     try {
         const fetch = require('node-fetch');
@@ -74,7 +74,7 @@ function App() {
             // Handle response data
             console.log(data)
             flag = data.nextturn;
-
+      
             if(data.message !== "Order does not match the turn")
             {
                  fetch(url1, {
@@ -195,7 +195,7 @@ function App() {
         console.log(updatedPlayerTokens[currentPlayerTokenIndex].top)
         
       }
-
+      
 
       const updated2PlayerTokens = playerTokens.map(token => {
         if (token.top === 500) {
