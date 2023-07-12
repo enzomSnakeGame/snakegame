@@ -27,7 +27,9 @@ const generatePlayerTokens = (numTokens) => {
 
 function App() {
   const [diceNumber, setDiceNumber] = useState(null);
-  let numTokens = 10;
+  
+  const [playerposition, setPlayerPosition] = useState(null);
+  const [numTokens, setnumTokens] = useState(10);
   const [countdown, setCountdown] = useState(10);
   const [currentPlayer, setCurrentPlayer] = useState(1);
   const [playerTokens, setPlayerTokens] = useState(generatePlayerTokens(numTokens));
@@ -49,16 +51,29 @@ function App() {
         const fetch = require('node-fetch');
 
         const idRoom = 1;
-        const turn = 1;
+        const turn = currentPlayer;
+       
+        let flag = turn ;
+      
+        const url = 'http://localhost:3000/game/games/checkOrder';
+        const url1 = 'http://localhost:3000/game/play';
         
-        const url = 'http://localhost:3001/game/play';
-        
+        const url3 = 'http://localhost:3000/game/games/status/update';
         const data = {
-          idRoom: idRoom,
-          turn: turn
+          playerId: 5,
+          gameId: 4
         };
+
+        const data1 = {
+            idRoom: 4,
+            turn: currentPlayer
+          };
         
-        fetch(url, {
+
+          const data2 = {
+            gameId: 4,
+          };  
+       await fetch(url, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -68,17 +83,63 @@ function App() {
           .then(response => response.json())
           .then(data => {
             // Handle response data
+            console.log(data)
+            flag = data.nextturn;
+
+            if(data.message !== "Order does not match the turn")
+            {
+                 fetch(url1, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data1)
+                  })
+                    .then(response => response.json())
+                    .then(data => {
+                       console.log(data)
+                       console.log(data.playerPosition)
+                       setDiceNumber(data.dice);
+                       setPlayerPosition(data.playerPosition)
+                       movePlayerToken(turn, data.playerPosition);
+                       console.log(flag)
+                       setCurrentPlayer(flag)
+                       fetch(url3, {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data2)
+                      })
+                        .then(response => response.json())
+                        .then(data => {
+                           console.log(data)
+                        }).catch(error => {
+                            // Handle error
+                          });
+                    }).catch(error => {
+                        // Handle error
+                      });
+
+            }
+            else
+            {
+                console.log("cannot play not your turn");
+            }
           })
           .catch(error => {
             // Handle error
           });
-      // Handle the API response data
-      const randomNumber = Math.floor(Math.random() * 6) + 1;
-      setDiceNumber(randomNumber);
+      
+        
+
+
+         
+          
+     
       
       // Move player token based on the API response
-      movePlayerToken(currentPlayer, randomNumber);
-      setCurrentPlayer(currentPlayer === numTokens ? 1 : currentPlayer + 1);
+     
       
     } catch (error) {
       console.error(error);
@@ -86,8 +147,8 @@ function App() {
     }
   };
   const movePlayerToken = (id, index) => {
-    id =1;
-    index = 1;
+    console.log(index);
+    console.log(id);
     const currentPlayerTokenIndex = playerTokens.findIndex(token => token.id === id);
     if (currentPlayerTokenIndex !== -1) {
       const updatedPlayerTokens = [...playerTokens];
@@ -132,7 +193,7 @@ function App() {
         
           <div style={{ textAlign: 'center', marginRight: '20px' }}>
             <p style={{ fontWeight: 'bold', marginBottom: '5px' }}>Player Turn</p>
-            <p style={{ fontSize: '24px', margin: '0' }}>1</p>
+            <p style={{ fontSize: '24px', margin: '0' }}>{currentPlayer}</p>
           </div>
           <div style={{ position: 'relative' }}>
             <img
