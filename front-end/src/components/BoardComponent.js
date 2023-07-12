@@ -1,9 +1,9 @@
 import React, { useState,useEffect  } from 'react';
-import { socket } from '../App';
+// import {  socket } from '../App';
 
-socket.on("make-move", (data) => {
+// socket.on("make-move", (data) => {
   
-});
+// });
 
 const colors = ['teal', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'cyan', 'magenta', 'lime'];
 const generatePlayerTokens = (numTokens) => {
@@ -65,7 +65,8 @@ function App() {
        // game id will be varible for part of start game 
           const data2 = {
             gameId: 4,
-          };  
+          }; 
+           
        await fetch(url, {
           method: 'POST',
           headers: {
@@ -95,7 +96,7 @@ function App() {
                        setDiceNumber(data.dice);
                        setPlayerPosition(data.playerPosition)
                        movePlayerToken(turn, data.playerPosition);
-                       socket.emit('make-move', { gameId: 1, position: data.playerPosition, dice: data.dice , turn: turn , nextturn: flag});
+                      //  socket.emit('make-move', { gameId: 1, position: data.playerPosition, dice: data.dice , turn: turn , nextturn: flag});
                        console.log(flag)
                        setCurrentPlayer(flag)
                        setCountdown(10);

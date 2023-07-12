@@ -14,6 +14,8 @@ const socket = io("http://localhost:3001");
 
 
 function App() {
+  const data = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vaEBleGFtcGxlLmNvbSIsImlhdCI6MTY4OTE1MDQ1NiwiZXhwIjoxNjg5MTU3NjU2fQ.UBQmfD8mtYk18VTCDNoEVxbfgRaMEes-M_PWVMmTOQc" ; 
+  sessionStorage.setItem('token',data);
   return (
     <div>
    

@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from 'react';
-
+import { useNavigate } from "react-router-dom";
 export default function App({ capacity, currentUsers }) {
   const [roomNumber, setRoomNumber] = useState(1);
+  const navigate = useNavigate();
 
   const incrementRoomNumber = () => {
     setRoomNumber(roomNumber + 1);
   };
+
+  const routeChange = () =>{ 
+    let path = `/Pending`; 
+    navigate(path);
+  }
+
+  const handelClick= ()=>{
+    incrementRoomNumber() ; 
+    routeChange() ; 
+  }
 
   return (
     <div style={{ textAlign: 'center' }}>
@@ -21,10 +32,12 @@ export default function App({ capacity, currentUsers }) {
         <h3 style={{ fontSize: '24px', fontWeight: 'bold', color: 'blue', marginBottom: '10px' }}>Room {roomNumber}</h3>
         <p style={{ marginBottom: '10px' }}>
           Capacity: {capacity}<br />
-          Remaining: { capacity - currentUsers}
         </p>
+        {/* <div>
+          <h3></h3>
+        </div> */}
         <button
-          onClick={incrementRoomNumber}
+        onClick={handelClick}
           style={{
             backgroundColor: 'blue',
             color: 'white',
