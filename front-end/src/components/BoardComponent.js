@@ -98,6 +98,7 @@ function App() {
                        socket.emit('make-move', { gameId: 1, position: data.playerPosition, dice: data.dice , turn: turn , nextturn: flag});
                        console.log(flag)
                        setCurrentPlayer(flag)
+                       setCountdown(10);
                        fetch(url3, {
                         method: 'POST',
                         headers: {
