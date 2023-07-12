@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const jwtController = require('../Services/User.js');
 
 const register = async (req, res) => {
+    console.log(req.body)
     email = req.body.email
     password = req.body.password
     const existingUser = await User.findOne({ where: { email: email } });
@@ -44,22 +45,24 @@ async function registeration(email,password){
 }
 
 const login = async (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
-    const user = await User.findOne({ where: { email: email } });
+    if(req.body.email !== null && req.body.password !== null){
+        const email = req.body.email;
+        const password = req.body.password;
+        const user = await User.findOne({ where: { email: email } });
 
-    if (user && await bcrypt.compare(password, user.tokenPassword)) {
-        // create tokens
-        const acesstoken = jwt.sign(
-            { email : email },
-            process.env.TOKEN_KEY,
-            {
-            expiresIn: "2h",
-            }
-        );
-        res.status(200).json({token : acesstoken});
-    } else {
-        res.status(401).json({ error: 'Incorrect email or password' });
+        if (user && await bcrypt.compare(password, user.tokenPassword)) {
+            // create tokens
+            const acesstoken = jwt.sign(
+                { email : email },
+                process.env.TOKEN_KEY,
+                {
+                expiresIn: "2h",
+                }
+            );
+            res.status(200).json({token : acesstoken});
+        } else {
+            res.status(401).json({ error: 'Incorrect email or password' });
+        }
     }
 }
 
