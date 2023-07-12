@@ -17,44 +17,34 @@ export default function App({ capacity, idRoom   }) {
   const handelClick= ()=>{
     routeChange() ; 
     fetchData()   
-    // clicked =1 ;  
   }
 
-  // const clicked = 0 ; 
+  const gameId ={ "gameId": idRoom } ; 
 
   const fetchData = async () => {
-    try {
-
+    console.log(gameId) ; 
       const url = 'http://localhost:3000/game/games/join' ; 
-      
       let headers = {}
       if (sessionStorage.getItem('token')) {
           headers['authorization']= sessionStorage.getItem('token')  ;
       }
-      
-      headers['Content-Type'] = 'application/json'; // Include 'Content-Type' header
-
-      const response = await fetch(url, {
+       fetch(url, {
         method: 'POST',
-        headers:headers,
-        body: JSON.stringify({ "idRoom": idRoom , 
-                              "playerId" :sessionStorage.getItem('token') }) // Parameter sent in the request body
-      });
-      if (response.ok) {
-        const jsonData = await response.json();
-        setData(jsonData); // Update state with the fetched data
-        console.log(Data) ;
-      } else {
-        console.error('Error:', response.status);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
+        headers: {
+          'Content-Type': 'application/json',
+          'authorization': sessionStorage.getItem('token')
+        },
+        body: JSON.stringify({gameId})
+      }).then(response => response.json())
+      .then(data => {
+         console.log(" revieved data  "+ data);
+      }).catch(error => {
+          // Handle error
+          console.log(error) ; 
+        });
   };
 
-  useEffect(() => {
-      //  fetchData(); // Call the fetch function
-  },[]);
+  
 
   return (
     <div style={{ textAlign: 'center' }}>
