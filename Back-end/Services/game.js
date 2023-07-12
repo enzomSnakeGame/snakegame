@@ -172,7 +172,7 @@ exports.checkPlayerStatus = async (idroom,playerId) => {
 
       // Check if the game status has changed to 1
       if (updatedGame.status === 1) {
-        return updatedGame;
+        return "player play";
       }
 
       // Wait for 1 second before checking again
