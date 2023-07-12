@@ -1,7 +1,9 @@
+// import { data } from 'browserslist';
 import React, { useState, useEffect } from 'react';
 
 const PendingPage = () => {
   const [points, setPoints] = useState('...'); // Initial state with three dots
+  const [statusGame, setStatusGame] = useState('');
 
   useEffect(() => {
     // Function to update the points every second
@@ -21,6 +23,32 @@ const PendingPage = () => {
       clearInterval(interval); // Clear the interval on component unmount
     };
   }, []);
+
+   // use this way to fetch the Api 
+
+
+   const startGameHandler = async () => {
+    const url = 'http://localhost:3000/games/start' ;
+
+    // try {
+      let headers = {};
+      if (sessionStorage.getItem('token')) {
+        headers = { 'authorization': sessionStorage.getItem('token') };
+      }
+  
+       await fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({ "gameId": 1 }) // Replace 'your_game_id' with the actual game ID
+      }).then((response)=>response.json())
+        .then((data)=>{
+          console.log(data);
+          setStatusGame(data);
+        }).catch(e =>{console.log(e)})
+    
+  };
+
+ 
 
   return (
     <>
@@ -64,8 +92,7 @@ const PendingPage = () => {
             transition: 'transform 0.3s ease',
           }}
           onClick={() => {
-            // Button click event handler 
-            // check if remaining 0 will route to board 
+            startGameHandler()
           }}
         >
            Start Game

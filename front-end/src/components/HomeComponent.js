@@ -57,6 +57,10 @@ function App() {
       .then((data) => {
         // Set the fetched data to the state
         console.log(data)
+        if(data ==null){
+          console.log("data is null --------")
+        }
+        else
         setCards(data);
       })
       .catch((error) => {
