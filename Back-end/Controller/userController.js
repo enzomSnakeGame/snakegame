@@ -54,7 +54,7 @@ const login = async (req, res) => {
             { email : email },
             process.env.TOKEN_KEY,
             {
-            expiresIn: "2h",
+            expiresIn: "20h",
             }
         );
         res.status(200).json({token : acesstoken});

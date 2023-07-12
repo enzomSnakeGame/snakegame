@@ -1,22 +1,60 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-export default function App({ capacity, currentUsers }) {
-  const [roomNumber, setRoomNumber] = useState(1);
+
+
+export default function App({ capacity, idRoom   }) {
+  const [roomNumber, setRoomNumber] = useState(idRoom);
+  const [Data, setData] = useState(1);
   const navigate = useNavigate();
 
-  const incrementRoomNumber = () => {
-    setRoomNumber(roomNumber + 1);
-  };
+    // setRoomNumber(idRoom);
 
-  const routeChange = () =>{ 
+   const routeChange = () =>{ 
     let path = `/Pending`; 
     navigate(path);
   }
 
   const handelClick= ()=>{
-    incrementRoomNumber() ; 
     routeChange() ; 
+    fetchData()   
+    // clicked =1 ;  
   }
+
+  // const clicked = 0 ; 
+
+  const fetchData = async () => {
+    try {
+
+      const url = 'http://localhost:3000/game/games/join' ; 
+      
+      let headers = {}
+      if (sessionStorage.getItem('token')) {
+          headers['authorization']= sessionStorage.getItem('token')  ;
+      }
+      
+      headers['Content-Type'] = 'application/json'; // Include 'Content-Type' header
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers:headers,
+        body: JSON.stringify({ "idRoom": idRoom , 
+                              "playerId" :sessionStorage.getItem('token') }) // Parameter sent in the request body
+      });
+      if (response.ok) {
+        const jsonData = await response.json();
+        setData(jsonData); // Update state with the fetched data
+        console.log(Data) ;
+      } else {
+        console.error('Error:', response.status);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  useEffect(() => {
+      //  fetchData(); // Call the fetch function
+  },[]);
 
   return (
     <div style={{ textAlign: 'center' }}>

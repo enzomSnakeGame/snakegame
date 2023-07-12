@@ -1,4 +1,5 @@
 const gameRepository = require("../Repository/gameRepository");
+const gameenddate = require('../Services/game')
 
 const move = async (idRoom, turn) => {
   // Get random number between 1 and 6
@@ -44,9 +45,12 @@ const move = async (idRoom, turn) => {
       gameRepository.updatePlayerPosition(newPosition, idRoom, turn);
     }
     gameRepository.updatePlayerStatus(idRoom, turn);
-    
+    // check if game end or not and send flag to client
+    const flag = await gameenddate.endDate(idRoom)
+
     return {"playerPosition" : newPosition , 
-            "dice" : randomDice};
+            "dice" : randomDice,
+            "end" : flag};
   } catch (error) {
     console.error('Error:', error);
   }

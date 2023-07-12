@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import {  socket } from '../App';
 
 import CardComponent from './CardComponent'; // Import the component you want to send data to
 import '../Styles/home.css'; // Import the CSS file
 
 
 
-
 function App() {
   const navigate = useNavigate();
-
+  
   const [cards, setCards] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [capacity, setCapacity] = useState('');
-
+  let gameid;
   const handleButtonClick = () => {
     setShowForm(!showForm);
     const dropForm = document.querySelector('.drop-form');
@@ -27,10 +27,38 @@ function App() {
     }
 
    };
-
+   
    const routeChange = () =>{ 
-    let path = `/Pending`; 
-    navigate(path);
+    const cap = {
+      capacity: capacity,
+    }; 
+   
+    let headers = {}
+    if (sessionStorage.getItem('token')) {
+        headers = { 'authorization': sessionStorage.getItem('token') }
+    }
+    console.log(cap)
+    const url = 'http://localhost:3000/game/games/create';
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': sessionStorage.getItem('token')
+      },
+      body: JSON.stringify(cap)
+    
+    })
+      .then(response => response.json())
+      .then(data => {
+         console.log(data);
+         let path = `/Pending`; 
+         navigate(path);
+         gameid = data.gameid;
+        socket.emit('create-game' , data.gameid);
+      }).catch(error => {
+          // Handle error
+        });
+   
   }
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -126,7 +154,7 @@ function App() {
               </div>
               <button type="submit" class="submit-button"
                onClick={routeChange} 
-               >Join</button>
+               >Create</button>
             </form>
           )}
     </div>
@@ -136,7 +164,7 @@ function App() {
           <div className="card" key={index}>
             <CardComponent
               capacity={card.capacity}
-              currentUsers={card.currentUsers}
+              idRoom={card.idRoom}
             />
           </div>
         ))}

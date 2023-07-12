@@ -1,9 +1,7 @@
 import React, { useState,useEffect  } from 'react';
 import {  socket } from '../App';
+import { useNavigate } from "react-router-dom";
 
-// socket.on("make-move", (data) => {
-  
-// });
 
 
 const colors = ['teal', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'cyan', 'magenta', 'lime'];
@@ -36,6 +34,12 @@ function App() {
   const [currentPlayer, setCurrentPlayer] = useState(parseInt(sessionStorage.getItem("turn")));
   const [playerTokens, setPlayerTokens] = useState(generatePlayerTokens(numTokens));
 
+  const navigate = useNavigate();
+  socket.on('end-game',(data) => {
+    let path = `/home`; 
+    navigate(path);
+    console.log(data);
+  })
   socket.on("make-move", (data) => {
     setDiceNumber(data.dice);
     setPlayerPosition(data.playerPosition)
@@ -130,8 +134,10 @@ function App() {
                        setDiceNumber(data.dice);
                        setPlayerPosition(data.playerPosition)
                        movePlayerToken(turn, data.playerPosition);
+                      //  if(data.flag === true){
+                      //     socket.emit('end-game',{gameId: 1})
+                      //  }
                       //  socket.emit('make-move', { gameId: 1, position: data.playerPosition, dice: data.dice , turn: turn , nextturn: flag});
-                       console.log(flag)
                        setCurrentPlayer(flag)
                        setCountdown(10);
                        fetch(url3, {
@@ -172,8 +178,10 @@ function App() {
     //let index2 = 1
     //console.log(index2)
     const currentPlayerTokenIndex = playerTokens.findIndex(token => token.id === id);
-    console.log(currentPlayerTokenIndex)
-    if (currentPlayerTokenIndex !== -1 && index!=-1) {
+
+
+    if (currentPlayerTokenIndex !== -1 && index!==-1) {
+
       const updatedPlayerTokens = [...playerTokens];
       let left2 = Math.floor((index-1)/10);
       let top2 = 0;
