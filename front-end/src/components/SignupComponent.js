@@ -32,6 +32,7 @@ export default function SignupComponent(){
         }).then(response=>response.json())
         .then(data=>{
           //API Success from LoginRadius Login API
+          console.log(data)
         })
         .catch(error=>console.log(error))
   }

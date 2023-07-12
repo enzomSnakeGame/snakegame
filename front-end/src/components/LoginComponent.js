@@ -23,19 +23,20 @@ export default function LoginComponent(){
 
     //Handle Login API Integration here
     const authenticateUser = () =>{
-        const endpoint=`http://localhost:3001/login?apikey`;
-         fetch(endpoint,
-             {
-             method:'POST',
-             headers: {
-             'Content-Type': 'application/json'
-             },
-             body:JSON.stringify(loginFields)
-             }).then(response=>response.json())
-             .then(data=>{
+        const endpoint=`http://localhost:3001/user/login`;
+        fetch(endpoint,
+            {
+                method:'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify(loginState)
+            }).then(response=>response.json())
+            .then(data=>{
+                console.log(data)
                 //API Success from LoginRadius Login API
-             })
-             .catch(error=>console.log(error))
+            })
+            .catch(error=>console.log(error))
     }
 
     return(
