@@ -164,6 +164,8 @@ function App() {
     }
   };
   const movePlayerToken = (id, index) => {
+    id=1;
+    index =19;
     const currentPlayerTokenIndex = playerTokens.findIndex(token => token.id === id);
     if (currentPlayerTokenIndex !== -1 && index!=-1) {
       const updatedPlayerTokens = [...playerTokens];
@@ -172,7 +174,7 @@ function App() {
       if(left2%2 !==0)
       {
         console.log("here")
-        top2 = (index-1)%10;
+        top2 = (index-1)%10
         top2 = 11-top2-2;
       }
       else
@@ -201,14 +203,14 @@ function App() {
       }
       else
       {
-
+        console.log("hena")
         console.log(left2)
         console.log(top2)
         
         if(top2!==0 && left2===0)
         {
             newPosition = (top2 * 50) ;
-            newpost =0;
+            newpost =450;
             updatedPlayerTokens[currentPlayerTokenIndex].left = newPosition;
             updatedPlayerTokens[currentPlayerTokenIndex].top = newpost;
             setPlayerTokens(updatedPlayerTokens);
