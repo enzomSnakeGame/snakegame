@@ -114,7 +114,9 @@ exports.checkOrderController = async (req, res) => {
   
   const playerId = req.body.playerId;
   const gameId = req.body.gameId;
-
+  console.log("turn check")
+  console.log(playerId);
+  console.log(gameId);
   try {
     const result = await gameService.checkOrder(playerId, gameId);
 

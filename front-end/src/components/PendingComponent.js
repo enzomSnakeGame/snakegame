@@ -8,7 +8,7 @@ const PendingPage = () => {
   const [statusGame, setStatusGame] = useState("");
   const navigate = useNavigate();
   
-  const gameId = 1;
+  //const gameId = 3;
   useEffect(() => {
     // Function to update the points every second
     const interval = setInterval(() => {
@@ -41,11 +41,11 @@ const PendingPage = () => {
         authorization: sessionStorage.getItem("token"),
       };
     }
-
+   const gameId =3;
     await fetch(url, {
       method: "POST",
       headers: headers,
-      body: JSON.stringify({ gameId}), // Replace 'your_game_id' with the actual game ID
+      body: JSON.stringify({gameId}), // Replace 'your_game_id' with the actual game ID
     })
       .then((response) => response.json())
       .then((data) => {

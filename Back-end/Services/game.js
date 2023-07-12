@@ -237,6 +237,8 @@ exports.updateGameStatusTo0= async (gameId)=> {
 
 exports.checkOrder = async(playerId,gameId)=>{
   try {
+    console.log(playerId);
+    console.log(gameId);
     const usergame = await Usergame.findOne({ where: { id: playerId, idroom: gameId } });
 
     if (!usergame) {
@@ -248,7 +250,9 @@ exports.checkOrder = async(playerId,gameId)=>{
     if (!game) {
       throw new Error('Game not found');
     }
-
+    console.log("ggg")
+    console.log(usergame.order);
+    console.log(game.turn);
     if (usergame.order === game.turn) {
       console.log('Order matches the turn');
       const turnResult = await this.Turn(gameId,playerId);

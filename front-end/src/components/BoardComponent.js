@@ -93,7 +93,7 @@ function App() {
         // player id will be removed also game id will be varible for part of start game
         const data = {
           playerId: 5,
-          gameId: 4
+          gameId: parseInt(sessionStorage.getItem("gameId")),
         };
         // game id will be varible for part of start game and turn 
         const data1 = {
@@ -108,7 +108,8 @@ function App() {
        await fetch(url, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'authorization': sessionStorage.getItem('token')
           },
           body: JSON.stringify(data)
         })
@@ -123,7 +124,9 @@ function App() {
                  fetch(url1, {
                     method: 'POST',
                     headers: {
-                      'Content-Type': 'application/json'
+                      'Content-Type': 'application/json',
+                      'authorization': sessionStorage.getItem('token')
+
                     },
                     body: JSON.stringify(data1)
                   })
@@ -143,7 +146,8 @@ function App() {
                        fetch(url3, {
                         method: 'POST',
                         headers: {
-                          'Content-Type': 'application/json'
+                          'Content-Type': 'application/json',
+                          'authorization': sessionStorage.getItem('token')
                         },
                         body: JSON.stringify(data2)
                       })
