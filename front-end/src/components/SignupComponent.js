@@ -32,7 +32,7 @@ export default function SignupComponent(){
         }).then(response=>response.json())
         .then(data=>{
           //API Success from LoginRadius Login API
-          navigate("/");
+          navigate("/loginPage");
         })
         .catch(error=>console.log(error))
   }

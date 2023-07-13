@@ -5,6 +5,7 @@ import {  socket } from '../App';
 import CardComponent from './CardComponent'; // Import the component you want to send data to
 import '../Styles/home.css'; // Import the CSS file
 
+import Navbar  from './NavBar';
 
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
 
   const handleLogOut = () => {
     sessionStorage.clear();
-    navigate("/");
+    navigate("/loginPage");
   };
 
   const handleInputChange = (event) => {
@@ -138,7 +139,8 @@ function App() {
   // }, []);
 
   return (
-    <div className='containers'>
+    <div>
+            <Navbar />
     <div class="drop-form">
           <button class="create-button" onClick={handleButtonClick}>
             Create
@@ -173,6 +175,7 @@ function App() {
             <CardComponent
               capacity={card.capacity}
               idRoom={card.idRoom}
+              remaining ={card.capacity - card.currentUser}
             />
           </div>
         ))}

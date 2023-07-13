@@ -15,22 +15,25 @@ function App() {
       <div>
         <Routes>
             <Route path="/" element={<LoginPage/>} />
+            <Route path="/LoginPage" element={<LoginPage/>} />
             <Route path="/signup" element={<SignupPage/>} />
+            <Route path="/home" element={<HomePage/>}/>
             <Route path="*" element={<PageNotFound />} />
         </Routes>
       </div>
-      
     ) 
   }
 
   return (
     <div>
       <Routes> 
+        <Route path="/" element={<HomePage/>} />  
         <Route path="/board" element={<BoardPage/>} />            
-        <Route path="/Pending" element={<PendingPage/>}/>
-        <Route path="/Home" element={<HomePage/>}/>
-        <Route path="/" element={<LoginPage/>} />
+        <Route path="/pending" element={<PendingPage/>}/>
+        <Route path="/home" element={<HomePage/>}/>
+        <Route path="/loginPage" element={<LoginPage/>} />
         <Route path="*" element={<PageNotFound />} />
+        <Route path="pageNotFound" element={<PageNotFound />} />
       </Routes>
   </div>
   );
