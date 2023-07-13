@@ -1,6 +1,6 @@
 const gameService = require("../Services/game");
 const moveService = require('../Service/gameService')
-
+const gameRepository = require('../Repository/gameRepository')
 // Create a game
 
 exports.createGame = async (req, res) => {
@@ -36,15 +36,47 @@ exports.createGame = async (req, res) => {
     }
   };
   // Get all games
+  // exports.getAllGames = async (req, res) => {
+  //   try {
+  //     const games = await gameService.findAllGames();
+
+  //     res.json(games);
+  //   } catch (error) {
+  //     console.error("Error retrieving games:", error);
+  //     res.status(500).json({ error: "Error retrieving games" });
+  //   }
+  // };
+
+
   exports.getAllGames = async (req, res) => {
     try {
       const games = await gameService.findAllGames();
-      res.json(games);
+
+  const gamesWithNewAttribute = await Promise.all(
+    games.map(async (game) => {
+      const currentUsersCount = await gameRepository.currentUsersCount(game.idRoom);
+      return {
+        ...game.toJSON(),
+        currentUser: currentUsersCount
+      };
+    })
+  );
+ 
+      res.json(gamesWithNewAttribute);
     } catch (error) {
       console.error("Error retrieving games:", error);
       res.status(500).json({ error: "Error retrieving games" });
     }
   };
+  
+
+
+
+
+
+
+
+
 
   exports.startGame = async (req, res) => {
     try {

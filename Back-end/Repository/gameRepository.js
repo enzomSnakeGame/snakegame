@@ -109,6 +109,22 @@ const queries = require("../queries/queries");
   }
 };
 
+const currentUsersCount =async (roomId) => {
+  return await queries.getCurrentUsers(roomId)
+  .then((currentUser)=>{
+   return currentUser ; 
+  }).catch(error => {
+   console.error('Failed to get current users:', error);
+ });
+ };
+
+//  const currentUsersCount =async (req , res) => {
+//   const roomId = req.body.roomId ; 
+//   const resu =   queries.getCurrentUsers(roomId)
+//   res.status(200).json({ "current user" : resu , 
+//                         "roomide" : roomId} );
+// }
+
 
 
 
@@ -118,6 +134,7 @@ module.exports = {
     updateEndDate,
     getPlayerPositionByRoomAndTurn,
     updatePlayerPosition,
-    updatePlayerStatus
+    updatePlayerStatus , 
+    currentUsersCount
   };
 

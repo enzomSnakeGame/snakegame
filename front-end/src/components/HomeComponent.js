@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import CardComponent from './CardComponent'; // Import the component you want to send data to
 import '../Styles/home.css'; // Import the CSS file
 
+import Navbar  from './NavBar';
 
 
 const App = ({socket})=> {
@@ -18,6 +19,11 @@ const App = ({socket})=> {
     setShowForm(!showForm);
     const dropForm = document.querySelector('.drop-form');
     dropForm.classList.add('clicked');
+  };
+
+  const handleLogOut = () => {
+    sessionStorage.clear();
+    navigate("/loginPage");
   };
 
   const handleInputChange = (event) => {
@@ -104,41 +110,15 @@ const App = ({socket})=> {
     fetchData()    
   }, []);
 
-  // useEffect(() => {
-  //   const data = [ 
-  //     {
-  //       capacity: 4,
-  //       currentUsers: 4
-  //     },
-  //     {
-  //       capacity: 4,
-  //       currentUsers: 3
-  //     },
-  //     {
-  //       capacity: 4,
-  //       currentUsers: 2
-  //     },
-  //     {
-  // //       capacity: 4,
-  //       currentUsers: 1
-  //     },
-  //     {
-  //       capacity: 4,
-  //       currentUsers: 5
-  //     },
-  //     {
-  //       capacity: 4,
-  //       currentUsers: 48
-  //     }
-  //   ];
-  //   setCards(data);
-  // }, []);
-
   return (
     <div>
+            <Navbar />
     <div class="drop-form">
           <button class="create-button" onClick={handleButtonClick}>
             Create
+          </button>
+          <button class="create-button" onClick={handleLogOut}>
+            Log Out
           </button>
           {showForm && (
             <form class="dropdown-form" onSubmit={handleSubmit}>
@@ -168,6 +148,7 @@ const App = ({socket})=> {
               capacity={card.capacity}
               idRoom={card.idRoom}
               socket={socket}
+              remaining ={card.capacity - card.currentUser}
             />
           </div>
         ))}

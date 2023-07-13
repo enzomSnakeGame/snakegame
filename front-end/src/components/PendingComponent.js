@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate} from "react-router-dom";
 import { useLocation } from 'react-router-dom';
+import { socket } from "../App";
 
 
 
@@ -46,6 +47,7 @@ console.log(sessionStorage.getItem("turn"));
   // use this way to fetch the Api
 
   const startGameHandler = async () => {
+    // setGameStarted(true);
     const url = "http://localhost:3000/game/games/start";
 
     // try {
@@ -159,6 +161,7 @@ console.log(sessionStorage.getItem("turn"));
           Please wait while other players join the game.
         </p>
         <button
+        className="start-button"
           style={{
             padding: "10px 20px",
             fontSize: "18px",

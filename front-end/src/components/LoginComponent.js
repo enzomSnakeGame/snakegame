@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { loginFields } from "../constants/formFields";
 import FormAction from "./FormAction";
-import FormExtra from "./FormExtra";
 import Input from "./Input";
 import { useNavigate } from "react-router-dom";
 
@@ -18,7 +17,6 @@ export default function LoginComponent(){
 
     const handleSubmit=(e)=>{
         e.preventDefault();
-        console.log(loginState);
         authenticateUser();
     }
 
@@ -63,7 +61,6 @@ export default function LoginComponent(){
             }
         </div>
 
-        <FormExtra/>
         <FormAction handleSubmit={handleSubmit} text="Login"/>
 
       </form>

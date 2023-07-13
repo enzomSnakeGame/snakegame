@@ -11,6 +11,7 @@ const User= require('../models/User');
 const Usergame = require('../models/Usergame');
 
 
+
 const getAllElements = async()=> {
   try {
     const elements = await Elements.findAll();
@@ -89,7 +90,8 @@ const getPlayerPositionByRoomAndTurn=  async (roomId, turn) => {
       }*/
       const [updatedRows] = await Usergame.update(
         { playerposition: newPosition },
-        { where: { idroom: idRoom, order: turn } }
+        { where: { idroom: idRoom,
+           order: turn } }
       );
     } catch (error) {
       console.error('Error retrieving and updating player position:', error);
@@ -99,7 +101,7 @@ const getPlayerPositionByRoomAndTurn=  async (roomId, turn) => {
 const updateEndDate = async (idRoom, turn) => {
   try {
     const userGame = await Usergame.findOne({
-      where: {
+      where: { 
         idroom: idRoom,
         order: turn
       }
@@ -143,11 +145,35 @@ const updateEndDate = async (idRoom, turn) => {
     }
   }
 
+  // const   getCurrentUsers = async(roomId)=> {
+  //   try {
+  //     const count = await Usergame.count({
+  //       where: {
+  //         idroom: roomId
+  //       }
+  //     });
   
+  //     return count;
+  //   } catch (error) {
+  //     throw new Error('Failed to get current users.');
+  //   }
+  // }
 
-  
-  
 
+  const getCurrentUsers = async (roomId) => {
+    try {
+      const currentUsers = await Usergame.findAll({
+        where: {
+          idroom: roomId
+        }
+      });
+      const count = currentUsers.length;
+      return count;
+    } catch (error) {
+      throw new Error('Failed to get current users.');
+    }
+  };
+  
 
 module.exports = { 
      getAllElements,
@@ -155,5 +181,6 @@ module.exports = {
      getRoomTurn, 
      updatePlayerPosition,
      updatePlayerStatus  ,
-      updateEndDate
+      updateEndDate , 
+      getCurrentUsers
 }  

@@ -1,7 +1,11 @@
   body {
-      background-color:#0C0D14;
+          background-color:#0C0D14;
+
     }
  
+    /* .home-container{ */
+
+    /* } */
     .drop-form {
       position: fixed;
       top: 30px;
