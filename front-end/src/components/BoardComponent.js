@@ -1,19 +1,19 @@
 import React, { useState,useEffect  } from 'react';
-import {  socket } from '../App';
 import { useNavigate } from "react-router-dom";
 
+import {NumTokens ,CurrentPlayer} from "./PendingComponent";
 
-
+ // Replace 'your-button-id' with the actual ID of your button
+var timer;
 const colors = ['teal', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'cyan', 'magenta', 'lime'];
 const generatePlayerTokens = (numTokens) => {
   const increaseLeftBy = 50;
   let playerTokens = [];
-  if (numTokens > 0) {
+  if (parseInt(sessionStorage.getItem("capacity")) > 0) {
     let remainingColors = [...colors]; // Copy the colors array
     for (let i = 0; i < numTokens; i++) {
-      const randomIndex = Math.floor(Math.random() * remainingColors.length);
-      const color = remainingColors[randomIndex];
-      remainingColors.splice(randomIndex, 1); // Remove the selected color from the remaining colors
+      const color = remainingColors[i];
+      remainingColors.splice(i, 1); // Remove the selected color from the remaining colors
       playerTokens.push({
         top:500,
         color,
@@ -25,14 +25,47 @@ const generatePlayerTokens = (numTokens) => {
   }
   return playerTokens;
 };
-function App() {
+const App =({socket})=> {
   
   const [diceNumber, setDiceNumber] = useState(null);
   const [playerposition, setPlayerPosition] = useState(null);
-  const [numTokens, setnumTokens] = useState(parseInt(sessionStorage.getItem("capacity")));
+  const [numTokens, setnumTokens] = useState(NumTokens);
   const [countdown, setCountdown] = useState(10);
-  const [currentPlayer, setCurrentPlayer] = useState(parseInt(sessionStorage.getItem("turn")));
+  const [currentPlayer, setCurrentPlayer] = useState(CurrentPlayer);
   const [playerTokens, setPlayerTokens] = useState(generatePlayerTokens(numTokens));
+   useEffect (()=>
+   
+   {
+    
+     
+    
+      // Function to be called when the button is clicked
+      var button = document.getElementById("1");
+    
+      // Function to start the timer when the button is not pressed
+      function startTimer() {
+        timer = setTimeout(function() {
+          rollDice(); // Call rolldice function after 10 seconds
+        }, 10000); // 10 seconds = 10,000 milliseconds
+      }
+    
+      // Function to reset the timer
+      function resetTimer() {
+        clearTimeout(timer);
+      }
+    
+    
+        // Event listener for button click
+        button.addEventListener('click', function() {
+          resetTimer(); // Reset the timer if the button is clicked
+          rollDice(); // Call rolldice function when the button is clicked
+        });
+    
+        // Start the timer when the page loads
+        startTimer();
+     
+   },[])
+  
 
   const navigate = useNavigate();
   socket.on('end-game',(data) => {
@@ -40,35 +73,8 @@ function App() {
     navigate(path);
     console.log(data);
   })
-  socket.on("make-move", (data) => {
-    setDiceNumber(data.dice);
-    setPlayerPosition(data.playerPosition)
-    movePlayerToken(data.turn, data.playerPosition);
-    setCurrentPlayer(data.nextturn)
-    setCountdown(10);
-    
-     const url4 = 'http://localhost:3000/game/games/status';
-     fetch(url4, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data.gameId)
-      })
-        .then(response => response.json())
-        .then(data => {
-           if(data.message !== "Player play")
-           { 
-              rollDice();
-           }
-        }).catch(error => {
-            // Handle error
-          });
-
-
-    
-    
-});
+  
+ 
 
   useEffect(() => {
     if (countdown > 0) {
@@ -78,8 +84,11 @@ function App() {
 
       return () => clearTimeout(timer);
     }
+
+   
   }, [countdown]);
   const rollDice = async () => {
+    
     console.log(sessionStorage.getItem("gameId"),"gwaaa", sessionStorage.getItem("capacity"),sessionStorage.getItem("turn"))
     try {
         const fetch = require('node-fetch');
@@ -92,7 +101,6 @@ function App() {
         //todo part of check each 10 second and socket and to think what to do when player finish the game.
         // player id will be removed also game id will be varible for part of start game
         const data = {
-          playerId: 5,
           gameId: parseInt(sessionStorage.getItem("gameId")),
         };
         // game id will be varible for part of start game and turn 
@@ -104,7 +112,8 @@ function App() {
           const data2 = {
             gameId: parseInt(sessionStorage.getItem("gameId")),
           }; 
-           
+          console.log("currentplayer");
+         console.log(currentPlayer);  
        await fetch(url, {
           method: 'POST',
           headers: {
@@ -117,10 +126,13 @@ function App() {
           .then(data => {
             // Handle response data
             console.log(data)
-            flag = data.nextturn;
-      
+
+            
+            
             if(data.message !== "Order does not match the turn")
             {
+              flag = data.nextturn;
+              console.log(flag);
                  fetch(url1, {
                     method: 'POST',
                     headers: {
@@ -136,12 +148,17 @@ function App() {
                        console.log(data.playerPosition)
                        setDiceNumber(data.dice);
                        setPlayerPosition(data.playerPosition)
-                       movePlayerToken(turn, data.playerPosition);
-                      //  if(data.flag === true){
-                      //     socket.emit('end-game',{gameId: 1})
-                      //  }
-                      //  socket.emit('make-move', { gameId: 1, position: data.playerPosition, dice: data.dice , turn: turn , nextturn: flag});
-                       setCurrentPlayer(flag)
+                       movePlayerToken(turn, data.playerPosition,flag);
+                       if(data.end === true){
+
+                          socket.emit('end-game',{gameId: parseInt(sessionStorage.getItem("gameId"))})
+                          let path = `/home`; 
+                          navigate(path);
+                       }
+                       
+                       socket.emit('make-move', { gameId: parseInt(sessionStorage.getItem("gameId")), position: data.playerPosition, dice: data.dice , turn: turn , nextturn: flag});
+                       clearTimeout(timer);
+                       
                        setCountdown(10);
                        fetch(url3, {
                         method: 'POST',
@@ -175,7 +192,7 @@ function App() {
       // Handle any errors that occur during the API call
     }
   };
-  const movePlayerToken = (id, index) => {
+  const movePlayerToken = (id, index,flag) => {
     console.log("ffff")
     console.log(id)
     console.log(index)
@@ -264,10 +281,81 @@ function App() {
       });
     
       setPlayerTokens(updated2PlayerTokens);
+      setCurrentPlayer(flag);
+      console.log(flag);
+
+      console.log(currentPlayer);
       
     }
   };
- 
+  useEffect(() => {
+    socket.on("move", (data) => {
+      console.log(`I listen to event move and this is data ${data}`);
+      setDiceNumber(data.dice);
+      setPlayerPosition(data.position)
+      movePlayerToken(data.turn, data.position);
+      setCurrentPlayer(data.nextturn)
+      console.log(currentPlayer);
+      setCountdown(10);
+      console.log("in socket");
+      console.log(data.position);
+      console.log(data.nextturn);
+      console.log(sessionStorage.getItem("Playerorder"))
+      // Function to be called when the button is clicked
+      var button = document.getElementById("1");
+    
+      // Function to start the timer when the button is not pressed
+      function startTimer() {
+        timer = setTimeout(function() {
+          rollDice(); // Call rolldice function after 10 seconds
+        }, 10000); // 10 seconds = 10,000 milliseconds
+      }
+    
+      // Function to reset the timer
+      function resetTimer() {
+        clearTimeout(timer);
+      }
+    
+    
+        // Event listener for button click
+        button.addEventListener('click', function() {
+          resetTimer(); // Reset the timer if the button is clicked
+          rollDice(); // Call rolldice function when the button is clicked
+        });
+    
+        // Start the timer when the page loads
+        startTimer();
+      // if(parseInt(data.nextturn) === parseInt (sessionStorage.getItem("Playerorder")))
+      // {
+      //   const url4 = 'http://localhost:3000/game/games/status';
+      //   fetch(url4, {
+      //       method: 'GET',
+      //       headers: {
+      //         'Content-Type': 'application/json'
+      //       },
+      //       body: JSON.stringify(data.gameId)
+      //     })
+      //       .then(response => response.json())
+      //       .then(data => {
+      //         if(data.message !== "Player play")
+      //         { 
+      //             rollDice();
+      //             console.log("I can see function rollDice in boardcomponent.js line 59");
+      //         }
+      //       }).catch(error => {
+      //           // Handle error
+      //         });
+      // }
+     
+  },[]);
+  socket.on('end',(data) => {
+    console.log(`I listen to event end and this is data ${data}`);
+    if(data === "change page"){
+      let path = `/home`; 
+      navigate(path);
+    }
+  })
+  },[socket]);
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
@@ -302,6 +390,7 @@ function App() {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
   <button
+    id="1"
     style={{ margin: '20px', backgroundColor: 'lightblue', width: '100px', height: '40px', borderRadius: '20px', fontWeight: 'bold', fontSize: '15px' }}
     onClick={rollDice}
   >

@@ -21,10 +21,10 @@ exports.createGame = async (req, res) => {
       const gameId = req.body.gameId;
       const playerId = req.playerId;
       console.log(gameId);
-      const result = await gameService.joinGame(gameId.gameId, playerId);
+      const result = await gameService.joinGame(gameId, playerId);
   
-      if (result === "Joined the game") {
-        res.status(200).json({ message: "Successfully joined the game" });
+      if (result !== "Cannot join. Game is full") {
+        res.status(200).json(result);
       } else if (result === "Cannot join. Game is full") {
         res.status(400).json({ error: "Cannot join. Game is full" });
       } else {
@@ -112,7 +112,7 @@ exports.takeTurn = async (req, res) => {
 
 exports.checkOrderController = async (req, res) => {
   
-  const playerId = req.body.playerId;
+  const playerId = req.playerId;
   const gameId = req.body.gameId;
   console.log("turn check")
   console.log(playerId);
@@ -132,4 +132,16 @@ exports.checkOrderController = async (req, res) => {
   }
 };
 
+
+exports.getOrderController=async (req, res) => {
+  const playerId = req.playerId;
+  const gameId = req.body.gameId;
+
+  try {
+    const order = await userService.getOrderByIdAndRoom(playerId, gameId);
+    res.json({ order });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
 

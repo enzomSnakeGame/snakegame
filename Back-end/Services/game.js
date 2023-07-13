@@ -35,7 +35,7 @@ exports.createGame = async (Capacity, playerId) => {
 exports.joinGame = async (gameId, playerId) => {
   try {
     const game = await Game.findByPk(gameId);
-   
+    
     if (!game) {
       throw new Error("Game not found");
     }
@@ -59,7 +59,12 @@ exports.joinGame = async (gameId, playerId) => {
         endDate: null, // Set the endDate to the current time
       });
      
-      return "Joined the game";
+  
+      if (usergame) {
+        return {"order":playerCount + 1};
+      } else {
+        throw new Error('Usergame not found');
+      }
     } else {
       // If the player count reaches or exceeds the capacity, disallow joining the game
       return "Cannot join. Game is full";
@@ -190,7 +195,7 @@ exports.checkPlayerStatus = async (idroom,playerId) => {
     }
 
     const startTime = Date.now();
-    const endTime = startTime + 10000; // 10 seconds interval
+    const endTime = startTime + 20000; // 10 seconds interval
 
     while (Date.now() < endTime) {
       // Retrieve the game from the database
@@ -295,6 +300,8 @@ exports.endDate = async (gameId) => {
     console.error(error);
   }
 };
+
+
 
 
 

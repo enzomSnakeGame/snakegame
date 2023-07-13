@@ -2,27 +2,27 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate} from "react-router-dom";
 import { useLocation } from 'react-router-dom';
-import { socket } from "../App";
-
-socket.on('join-game', (data) => { // data will send here is capacity
-  console.log(data);
-});
 
 
-const PendingPage = () => {
+
+export let NumTokens ;
+export let CurrentPlayer  ;
+
+const PendingPage = ({socket}) => {
   const [points, setPoints] = useState("..."); // Initial state with three dots
   const [statusGame, setStatusGame] = useState("");
+  const [cap,setCapacity] = useState("");
+  const [tur,setturn] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
    const gameId = location.state;
 
-console.log("the recieved game id is :------------- " + gameId); 
-socket.on('start-game', (data) => {
-  // make client navigate to board page
-  // let path = `/board`;
-  // navigate(path);
-  console.log(data);
-});
+console.log("gameid");
+console.log(NumTokens);
+console.log(CurrentPlayer);
+console.log(sessionStorage.getItem("capacity"));
+console.log(sessionStorage.getItem("turn"));
+
 
   useEffect(() => {
     // Function to update the points every second
@@ -66,15 +66,29 @@ socket.on('start-game', (data) => {
         if (data == "can not Start Game") {
           // 22t3lo estana
         } else {
+          console.log("in start");
           console.log(data);
           console.log(data.capacity)
+          setCapacity(data.capacity);
+          setturn(data.turn);
           sessionStorage.setItem("capacity",data.capacity );
+          NumTokens = parseInt(sessionStorage.getItem("capacity"));
           sessionStorage.setItem("turn",data.turn);
+          CurrentPlayer = parseInt(sessionStorage.getItem("turn"));
+          console.log(NumTokens);
+          console.log(CurrentPlayer)
           sessionStorage.setItem("gameId",gameId);
           let path = `/board`;
           navigate(path);
           // Pass the data as state when navigating to the '/board' route
-          socket.emit("start-game", data.gameid);
+          console.log("avasd")
+          console.log(gameId);
+          console.log(data.gameid);
+          socket.emit("start-game",{
+           capacity: data.capacity,
+          turn: data.turn,
+          gameId:gameId
+          });
         }
         console.log(data);
         //setStatusGame(data);
@@ -83,6 +97,29 @@ socket.on('start-game', (data) => {
         console.log(e);
       });
   };
+  
+  useEffect(() => {
+    socket.on('start', (data) => {
+      
+    console.log("here");
+    sessionStorage.setItem("capacity",data.capacity);
+    console.log(sessionStorage.getItem("capacity"));
+    NumTokens = parseInt(sessionStorage.getItem("capacity"));
+    sessionStorage.setItem("turn",data.turn);
+    sessionStorage.setItem("gameId",data.gameId);
+     CurrentPlayer = parseInt(sessionStorage.getItem("turn"))
+     console.log(NumTokens)
+     console.log(CurrentPlayer)
+     let path = `/board`;
+     navigate(path);
+     console.log(data);   
+ 
+    });
+  
+    socket.on('join', (data) => {
+      
+    });
+  },[socket]);
 
   return (
     <>

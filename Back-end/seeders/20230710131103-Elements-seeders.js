@@ -43,8 +43,8 @@ module.exports = {
         updatedAt: new Date(),
       },{
         idBoard: 1,
-        start: 32,
-        end: 10,
+        start: 36,
+        end: 6,
         createdAt: new Date(),
         updatedAt: new Date(),
       },{

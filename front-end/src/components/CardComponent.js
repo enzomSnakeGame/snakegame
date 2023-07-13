@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import {  socket } from '../App';
 
 
-export default function App({ capacity, idRoom   }) {
+
+export default function App({ capacity, idRoom,socket}) {
   const [roomNumber, setRoomNumber] = useState(idRoom);
   const [Data, setData] = useState(1);
   const navigate = useNavigate();
@@ -36,11 +36,13 @@ export default function App({ capacity, idRoom   }) {
           'Content-Type': 'application/json',
           'authorization': sessionStorage.getItem('token')
         },
-        body: JSON.stringify({gameId})
+        body: JSON.stringify(gameId)
       }).then(response => response.json())
       .then(data => {
-         console.log(data);
-          socket.emit('join-game' , data.gameid);
+        console.log(`card component line 41 data of join game ${gameId.gameId}`);
+        console.log(data);
+        sessionStorage.setItem("Playerorder",data.order);
+        socket.emit('join-game' , gameId.gameId);
       }).catch(error => {
           // Handle error
           console.log(error) ; 

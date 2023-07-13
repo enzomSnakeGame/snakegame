@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import {  socket } from '../App';
+
 
 import CardComponent from './CardComponent'; // Import the component you want to send data to
 import '../Styles/home.css'; // Import the CSS file
 
 
 
-function App() {
+const App = ({socket})=> {
   const navigate = useNavigate();
   
   const [cards, setCards] = useState([]);
@@ -51,8 +51,10 @@ function App() {
       .then(response => response.json())
       .then(data => {
          console.log(data);
+         sessionStorage.setItem("Playerorder",1)
+         let state = data.gameid;
          let path = `/Pending`; 
-         navigate(path);
+         navigate(path, { state });
          gameid = data.gameid;
         socket.emit('create-game' , data.gameid);
       }).catch(error => {
@@ -165,6 +167,7 @@ function App() {
             <CardComponent
               capacity={card.capacity}
               idRoom={card.idRoom}
+              socket={socket}
             />
           </div>
         ))}

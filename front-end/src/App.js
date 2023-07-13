@@ -7,9 +7,14 @@ import PendingPage from './pages/pending'
 import HomePage  from  './pages/Home'
 import Navbar  from './components/NavBar';
 import {io} from 'socket.io-client'
-const socket = io("http://localhost:3001");
+import React, { useState,useEffect  } from 'react';
 
 function App() {
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+      setSocket(io("http://localhost:3001"));
+  },[])
   // if(!sessionStorage){
   //   console.log("tesst0");
   //   console.log(sessionStorage);
@@ -25,9 +30,9 @@ function App() {
   return (
     <div>
       <Routes> 
-        <Route path="/board" element={<BoardPage/>} />            
-        <Route path="/Pending" element={<PendingPage/>}/>
-        <Route path="/Home" element={<HomePage/>}/>
+      <Route path="/board" element={<BoardPage socket = {socket}/>} />
+        <Route path="/Pending" element={<PendingPage socket = {socket}/>}/>
+        <Route path="/Home" element={<HomePage socket = {socket}/>}/>
       </Routes>
       <div className="min-h-full h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <header>
@@ -46,5 +51,4 @@ function App() {
   );
 } 
 
-export {socket};
 export default App;
