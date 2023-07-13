@@ -10,28 +10,15 @@ import {io} from 'socket.io-client';
 const socket = io("http://localhost:3001");
 
 function App() {
-  if(sessionStorage.length == 0){
-    return (
-      <div>
-        <Routes>
-            <Route path="/" element={<LoginPage/>} />
-            <Route path="/LoginPage" element={<LoginPage/>} />
-            <Route path="/signup" element={<SignupPage/>} />
-            <Route path="/home" element={<HomePage/>}/>
-            <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </div>
-    ) 
-  }
-
   return (
     <div>
       <Routes> 
-        <Route path="/" element={<HomePage/>} />  
+        <Route path="/" element={<LoginPage/>} />
+        <Route path="/home" element={<HomePage/>}/>
         <Route path="/board" element={<BoardPage/>} />            
         <Route path="/pending" element={<PendingPage/>}/>
-        <Route path="/home" element={<HomePage/>}/>
         <Route path="/loginPage" element={<LoginPage/>} />
+        <Route path="/signup" element={<SignupPage/>} />
         <Route path="*" element={<PageNotFound />} />
         <Route path="pageNotFound" element={<PageNotFound />} />
       </Routes>

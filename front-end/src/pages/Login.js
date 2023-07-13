@@ -1,9 +1,11 @@
 import Header from "../components/Header"
 import LoginComponent from "../components/LoginComponent.js"
+import HomePage from "./Home"
 
 export default function LoginPage(){
-    return(
-        <>
+    if(sessionStorage.length == 0){
+        return (
+            <>
         <div>
             <div className="min-h-full h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: 'white' }}>
                 <div className="max-w-md w-full space-y-8">
@@ -18,5 +20,10 @@ export default function LoginPage(){
             </div>
         </div>
         </>
-    )
+        )
+    }else{
+        return(
+            <HomePage />
+        )
+    }
 }
