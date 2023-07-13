@@ -357,7 +357,7 @@ const App =({socket})=> {
   })
   },[socket]);
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor:'white' }}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
         <h2 style={{ marginLeft: '240px', marginBottom: '10px' }}>Snakes and Ladders</h2>
         <div style={{ display: 'flex', alignItems: 'center' }}>
