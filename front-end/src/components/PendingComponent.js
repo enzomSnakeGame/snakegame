@@ -12,6 +12,8 @@ const PendingPage = () => {
   
   const [points, setPoints] = useState("..."); // Initial state with three dots
   const [statusGame, setStatusGame] = useState("");
+  // const [gameStarted, setGameStarted] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
    const gameId = location.state;
@@ -23,6 +25,14 @@ socket.on('start-game', (data) => {
   // navigate(path);
   console.log(data);
 });
+
+
+
+// useEffect(() => {
+//     setGameStarted(true);
+// }, []);
+
+
 
   useEffect(() => {
     // Function to update the points every second
@@ -46,6 +56,7 @@ socket.on('start-game', (data) => {
   // use this way to fetch the Api
 
   const startGameHandler = async () => {
+    // setGameStarted(true);
     const url = "http://localhost:3000/game/games/start";
 
     // try {
@@ -122,6 +133,7 @@ socket.on('start-game', (data) => {
           Please wait while other players join the game.
         </p>
         <button
+        className="start-button"
           style={{
             padding: "10px 20px",
             fontSize: "18px",

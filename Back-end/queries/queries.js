@@ -90,7 +90,8 @@ const getPlayerPositionByRoomAndTurn=  async (roomId, turn) => {
       }*/
       const [updatedRows] = await Usergame.update(
         { playerposition: newPosition },
-        { where: { idroom: idRoom, order: turn } }
+        { where: { idroom: idRoom,
+           order: turn } }
       );
     } catch (error) {
       console.error('Error retrieving and updating player position:', error);
