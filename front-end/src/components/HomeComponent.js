@@ -20,6 +20,11 @@ function App() {
     dropForm.classList.add('clicked');
   };
 
+  const handleLogOut = () => {
+    sessionStorage.clear();
+    navigate("/");
+  };
+
   const handleInputChange = (event) => {
     const value = parseInt(event.target.value, 10);
     if (!isNaN(value)) {
@@ -133,10 +138,13 @@ function App() {
   // }, []);
 
   return (
-    <div>
+    <div className='containers'>
     <div class="drop-form">
           <button class="create-button" onClick={handleButtonClick}>
             Create
+          </button>
+          <button class="create-button" onClick={handleLogOut}>
+            Log Out
           </button>
           {showForm && (
             <form class="dropdown-form" onSubmit={handleSubmit}>

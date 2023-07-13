@@ -18,7 +18,6 @@ export default function LoginComponent(){
 
     const handleSubmit=(e)=>{
         e.preventDefault();
-        console.log(loginState);
         authenticateUser();
     }
 

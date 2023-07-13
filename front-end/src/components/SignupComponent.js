@@ -16,7 +16,6 @@ export default function SignupComponent(){
 
   const handleSubmit=(e)=>{
     e.preventDefault();
-    console.log(signupState)
     createAccount()
   }
 
