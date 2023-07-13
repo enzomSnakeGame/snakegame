@@ -1,8 +1,12 @@
-.body {
-      background-color:#0C0D14;
+  body {
+          background-color:#0C0D14;
+
     }
  
-.drop-form {
+    /* .home-container{ */
+
+    /* } */
+    .drop-form {
       position: fixed;
       top: 30px;
       right: 40px; /* Changed the right margin to 40px */

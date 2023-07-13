@@ -108,36 +108,6 @@ function App() {
     fetchData()    
   }, []);
 
-  // useEffect(() => {
-  //   const data = [ 
-  //     {
-  //       capacity: 4,
-  //       currentUsers: 4
-  //     },
-  //     {
-  //       capacity: 4,
-  //       currentUsers: 3
-  //     },
-  //     {
-  //       capacity: 4,
-  //       currentUsers: 2
-  //     },
-  //     {
-  // //       capacity: 4,
-  //       currentUsers: 1
-  //     },
-  //     {
-  //       capacity: 4,
-  //       currentUsers: 5
-  //     },
-  //     {
-  //       capacity: 4,
-  //       currentUsers: 48
-  //     }
-  //   ];
-  //   setCards(data);
-  // }, []);
-
   return (
     <div>
             <Navbar />

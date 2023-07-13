@@ -9,6 +9,7 @@ import { socket } from "../App";
 // });
 
 const PendingPage = () => {
+  
   const [points, setPoints] = useState("..."); // Initial state with three dots
   const [statusGame, setStatusGame] = useState("");
   const navigate = useNavigate();
